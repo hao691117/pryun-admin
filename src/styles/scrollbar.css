@@ -1,0 +1,20 @@
+/* 必须要 不然不生效 */
+::-webkit-scrollbar {
+  position: relative;
+  width: 16px;
+  height: 16px;
+}
+/* 滚动条用内阴影实现 */
+::-webkit-scrollbar-thumb {
+  border: calc(var(--scrollbarSize, 4) * 1px) solid rgba(255, 0, 0, 0);
+  border-radius: calc(var(--scrollbarSize, 4) * 3px);
+  box-shadow: inset calc(var(--scrollbarSize, 4) * 4px) 0 0 rgba(255, 0, 0, 0);
+}
+/* 鼠标聚焦容器内滚动条显示 */
+:hover::-webkit-scrollbar-thumb {
+  box-shadow: inset calc(var(--scrollbarSize, 4) * 4px) 0 0 var(--color-scrollbar, rgba(128, 128, 128, 0.7));
+}
+/* 鼠标聚焦滚动条内滚动条显示 */
+::-webkit-scrollbar-thumb:hover {
+  box-shadow: inset calc(var(--scrollbarSize, 4) * 4px) 0 0 var(--color-scrollbar-active, rgba(128, 128, 128, 1));
+}
