@@ -24,12 +24,15 @@ const proxyOptions = {
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
   const { VITE_BASE_URL = '' } = loadEnv(mode, './')
+
+  const base = `/${VITE_BASE_URL}/`
+
+  const outDir = `dist_${VITE_BASE_URL}`
+
   return {
     plugins: [vue()],
-    base: `/${VITE_BASE_URL}/`,
-    build: {
-      outDir: `dist_${VITE_BASE_URL}`,
-    },
+    base,
+    build: { outDir },
     server: {
       host: '0.0.0.0', // 暴露本地服务到局域网
       proxy: proxyOptions[mode],
