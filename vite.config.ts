@@ -25,7 +25,7 @@ const proxyOptions = {
 export default defineConfig(({ mode }) => {
   const { VITE_BASE_URL = '' } = loadEnv(mode, './')
 
-  const base = `/${VITE_BASE_URL}/`
+  const base = VITE_BASE_URL ? `/${VITE_BASE_URL}/` : ''
 
   const outDir = `dist_${VITE_BASE_URL}`
 
