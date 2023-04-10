@@ -1,7 +1,7 @@
 <template>
-  <div class="sider" :class="[{ 'sider-min': !full }]">
+  <div class="sider" :class="[{ 'sider-min': !sider_full }]">
     <div class="sider-content">
-      <div class="logo" @click="full = !full">
+      <div class="logo">
         <div class="logo-img"></div>
         <div class="logo-text">PR云社区开放平台</div>
       </div>
@@ -17,6 +17,7 @@
   </div>
 </template>
 <script setup lang="ts">
+import { sider_full } from './com-data'
 import type { RouteRecordRaw } from 'vue-router'
 import { ref, computed } from 'vue'
 import { StoreSystem } from '@/store/system'
@@ -24,8 +25,6 @@ const storeSystem = StoreSystem()
 
 // 动态路由列表
 const dynamicRoutes = ref<RouteRecordRaw[]>(storeSystem.dynamicRoutes)
-
-const full = ref(true)
 </script>
 <style scoped>
 .sider {
@@ -58,7 +57,6 @@ const full = ref(true)
   height: 72px;
   display: flex;
   align-items: stretch;
-  border-bottom: 1px solid rgba(128, 128, 128, 0.2);
   transition: inherit;
 }
 .logo-img {
@@ -85,33 +83,31 @@ const full = ref(true)
   opacity: 1;
 }
 .sider-list {
-  padding: 10px;
   box-sizing: border-box;
   overflow-x: hidden;
   overflow-y: overlay;
   transition: inherit;
 }
 .list-item {
-  padding: 0 10px;
+  padding: 0 16px;
   box-sizing: border-box;
-  height: 40px;
+  height: 60px;
   width: 100%;
   display: flex;
   align-items: center;
   cursor: pointer;
   transition: inherit;
-  border-radius: 6px;
 }
 .list-item + .list-item {
   margin-top: 10px;
 }
 .list-item:hover {
-  background-color: green;
+  background-color: #001528;
 }
 .list-item-icon {
   position: relative;
   flex-shrink: 0;
-  width: 32px;
+  width: 40px;
   height: 28px;
   z-index: 1;
   display: flex;
