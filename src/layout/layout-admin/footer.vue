@@ -3,7 +3,7 @@
 </template>
 <style>
 .footer {
-  height: 72px;
+  min-height: 60px;
   flex-shrink: 0;
   z-index: 9;
   transition: inherit;

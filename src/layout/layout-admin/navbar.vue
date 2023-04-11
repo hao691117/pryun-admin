@@ -1,8 +1,13 @@
 <template>
   <div class="backdrop-filter navbar">
-    <div class="menu-btn" @click="change_sider_full">
-      <div class="menu-icon icon-list" :class="[{ 'icon-list-active': sider_full }]"></div>
+    <div class="menu-btn" @click="change_sider_retract">
+      <div class="menu-icon icon-list" :class="[{ 'icon-list-active': sider_retract }]"></div>
     </div>
+    <el-breadcrumb separator="/">
+      <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item>测试示例</el-breadcrumb-item>
+      <el-breadcrumb-item>示例二</el-breadcrumb-item>
+    </el-breadcrumb>
     <div class="content"></div>
     <div class="menu-btn">
       <div class="menu-icon icon-search"></div>
@@ -17,21 +22,24 @@
       <template #dropdown>
         <el-dropdown-menu>
           <el-dropdown-item>个人资料</el-dropdown-item>
-          <el-dropdown-item>注销登录</el-dropdown-item>
+          <el-dropdown-item @click="logout">注销登录</el-dropdown-item>
         </el-dropdown-menu>
       </template>
     </el-dropdown>
   </div>
 </template>
 <script setup lang="ts">
-import { sider_full } from './com-data'
+import { useRouter } from 'vue-router'
+import { sider_retract, change_sider_retract } from './com-data'
+
 // import { useDark, useToggle } from '@vueuse/core'
 
 // const isDark = useDark()
 // const toggleDark = useToggle(isDark)
 
-const change_sider_full = () => {
-  sider_full.value = !sider_full.value
+const router = useRouter()
+const logout = (e: any) => {
+  router.push('/login')
 }
 </script>
 <style scoped>
@@ -39,7 +47,7 @@ const change_sider_full = () => {
   position: sticky;
   top: 0;
   left: 0;
-  height: 72px;
+  height: 78px;
   flex-shrink: 0;
   padding: 0 16px;
   box-sizing: border-box;

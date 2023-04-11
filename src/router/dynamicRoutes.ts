@@ -4,10 +4,82 @@ import { icons } from './icon'
 // 动态路由
 export const dynamicRoutes: RouteRecordRaw[] = [
   {
+    name: 'workbench',
+    path: '/workbench',
+    meta: { icons: [icons.relation], title: '工作台' },
+    redirect: '/workbench/workbench-index',
+    children: [
+      {
+        name: 'workbench-index',
+        path: '/workbench/workbench-index',
+        meta: {
+          icons: [icons.icon_vue],
+          title: '工作台',
+          showFooter: false,
+        },
+        component: () => import('../views/workbench/workbench-index.vue'),
+      },
+    ],
+  },
+  {
+    name: 'overview',
+    path: '/overview',
+    meta: { icons: [icons.relation], title: '系统总览' },
+    redirect: '/overview/overview-index',
+    children: [
+      {
+        name: 'overview-index',
+        path: '/overview/overview-index',
+        meta: {
+          icons: [icons.icon_vue],
+          title: '系统总览',
+          showFooter: false,
+        },
+        component: () => import('../views/overview/overview-index.vue'),
+      },
+    ],
+  },
+  {
+    name: 'datav',
+    path: '/datav',
+    meta: { icons: [icons.relation], title: '可视化大屏' },
+    redirect: '/datav/datav-index',
+    children: [
+      {
+        name: 'datav-index',
+        path: '/datav/datav-index',
+        meta: {
+          icons: [icons.icon_vue],
+          title: '可视化大屏',
+          showFooter: false,
+        },
+        component: () => import('../views/datav/datav-index.vue'),
+      },
+    ],
+  },
+  {
+    name: 'apis',
+    path: '/apis',
+    meta: { icons: [icons.relation], title: 'API管理' },
+    redirect: '/apis/apis-index',
+    children: [
+      {
+        name: 'apis-index',
+        path: '/apis/apis-index',
+        meta: {
+          icons: [icons.icon_vue],
+          title: 'API管理',
+          showFooter: false,
+        },
+        component: () => import('../views/apis/apis-index.vue'),
+      },
+    ],
+  },
+  {
     name: 'test',
     path: '/test',
     redirect: '/test/test-index',
-    meta: { icons: [icons.relation], title: '测试示例' },
+    meta: { icons: [icons.share_fill], title: '测试示例' },
     children: [
       {
         name: 'test-index',
@@ -31,57 +103,56 @@ export const dynamicRoutes: RouteRecordRaw[] = [
     ],
   },
   {
-    name: 'test2',
-    path: '/test2',
-    redirect: '/test2/test-index',
-    meta: { icons: [icons.exterior], title: '测试示例2' },
+    name: 'users',
+    path: '/users',
+    meta: { icons: [icons.relation], title: '用户管理' },
+    redirect: '/users/users-brisk',
     children: [
       {
-        name: 'test2-index',
-        path: '/test2/test-index',
-        component: () => import('@/views/test2/test2-index.vue'),
+        name: 'users-brisk',
+        path: '/users/users-brisk',
         meta: {
           icons: [icons.icon_vue],
-          title: '示例一',
+          title: '活跃分析',
         },
+        component: () => import('../views/users/users-brisk.vue'),
       },
       {
-        name: 'test2-details',
-        path: '/test2/test-details',
-        component: () => import('@/views/test2/test2-details.vue'),
+        name: 'users-index',
+        path: '/users/users-index',
         meta: {
           icons: [icons.icon_vue],
-          title: '详情',
+          title: '用户列表',
           hideInSider: true,
         },
+        component: () => import('../views/users/users-index.vue'),
       },
       {
-        name: 'test2-details2',
-        path: '/test2/test-details2',
-        component: () => import('@/views/test2/test2-details2.vue'),
+        name: 'users-info',
+        path: '/users/users-info',
         meta: {
           icons: [icons.icon_vue],
-          title: '详情2',
+          title: '用户详情',
           hideInSider: true,
         },
+        component: () => import('../views/users/users-info.vue'),
       },
     ],
   },
   {
-    name: 'workbench',
-    path: '/workbench',
-    meta: { icons: [icons.relation], title: '工作台' },
-    redirect: '/workbench/workbench-index',
+    name: 'set',
+    path: '/set',
+    meta: { icons: [icons.set], title: '系统设置' },
+    redirect: '/set/set-theme',
     children: [
       {
-        name: 'workbench-index',
-        path: '/workbench/workbench-index',
+        name: 'set-theme',
+        path: '/set/set-theme',
         meta: {
           icons: [icons.icon_vue],
-          title: '工作台',
-          showFooter: false,
+          title: '主题设置',
         },
-        component: () => import('../views/workbench/workbench-index.vue'),
+        component: () => import('../views/set/set-theme.vue'),
       },
     ],
   },
