@@ -1,6 +1,6 @@
 <template>
   <div style="padding: 20px; box-sizing: border-box">
-    <div style="background-color: #ffffff; border-radius: 12px">
+    <div>
       <div style="height: 200px; display: flex; align-items: center; justify-content: center">workbench-index</div>
       <div style="height: 200px; display: flex; align-items: center; justify-content: center">workbench-index</div>
       <div style="height: 200px; display: flex; align-items: center; justify-content: center">workbench-index</div>

@@ -1,4 +1,6 @@
 :root {
+  --color-bg: rgba(230, 230, 230, 1);
+
   /* 默认色彩 */
   --color-red: rgba(255, 59, 48, 1);
   --color-orange: rgba(255, 149, 0, 1);

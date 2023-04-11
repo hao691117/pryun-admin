@@ -11,7 +11,6 @@
   align-items: center;
   justify-content: center;
   border-top: 1px solid rgba(128, 128, 128, 0.2);
-  background-color: #ffffff;
 }
 .footer-sticky {
   position: sticky;

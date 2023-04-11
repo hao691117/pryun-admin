@@ -7,16 +7,29 @@
     <div class="menu-btn">
       <div class="menu-icon icon-search"></div>
     </div>
-    <div class="menu-btn">
-      <div class="menu-icon icon-user">
-        <img class="menu-icon-img" src="https://pryun.oss-cn-chengdu.aliyuncs.com/pryun/avatars/1680485639112_11BB.jpg" alt="" />
+    <el-dropdown trigger="click">
+      <div class="menu-btn">
+        <div class="menu-icon icon-user">
+          <img class="menu-icon-img" src="https://pryun.oss-cn-chengdu.aliyuncs.com/pryun/avatars/1680485639112_11BB.jpg" alt="" />
+        </div>
+        <div class="menu-text">Breathe</div>
       </div>
-      <div class="menu-text">Breathe</div>
-    </div>
+      <template #dropdown>
+        <el-dropdown-menu>
+          <el-dropdown-item>个人资料</el-dropdown-item>
+          <el-dropdown-item>注销登录</el-dropdown-item>
+        </el-dropdown-menu>
+      </template>
+    </el-dropdown>
   </div>
 </template>
 <script setup lang="ts">
 import { sider_full } from './com-data'
+// import { useDark, useToggle } from '@vueuse/core'
+
+// const isDark = useDark()
+// const toggleDark = useToggle(isDark)
+
 const change_sider_full = () => {
   sider_full.value = !sider_full.value
 }
@@ -35,7 +48,6 @@ const change_sider_full = () => {
   transition: inherit;
   display: flex;
   align-items: center;
-  background-color: #ffffff;
   border-bottom: 1px solid rgba(128, 128, 128, 0.2);
   gap: 8px;
 }
@@ -45,7 +57,7 @@ const change_sider_full = () => {
 }
 
 .menu-btn {
-  padding: 12px;
+  padding: 12px 16px;
   min-width: 44px;
   min-height: 44px;
   box-sizing: border-box;
@@ -56,9 +68,10 @@ const change_sider_full = () => {
   cursor: pointer;
 }
 .menu-btn:hover {
-  background-color: #d6d6d6;
+  background-color: var(--color-pr-action-sheet-active);
 }
 .menu-icon {
+  flex-shrink: 0;
   width: 20px;
   height: 20px;
   background-size: 100% 100%;
@@ -73,14 +86,15 @@ const change_sider_full = () => {
   margin-left: 8px;
 }
 .icon-list {
-  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAVUExURUdwTAAAAAAAAAAAAAAAAAAAAAAAAO0EbHoAAAAGdFJOUwB/KVjSpiYKTnMAAAJ0SURBVHja7ZvLTsMwEEVD2nrdgsQ6Eo91igTr0qqsS4VYE1Ln/z8BEFRtnIfdeO4g0D0/cBSPx5OZxElCCCGEEEL+IVcvlSjri6ZjVImzcR3pk7ykyhyJATiqN0eCeJDK1h1nFYS8JplgJAt8SNygPGAkZU1yiZEUNcmtxpPcasRkrLG7QHkyVcj4nXOsQILyjj/pG6uVJDfyjvNm1ZoLV8bHO75tEEIIIYT8GvcD3rl3z/v+dhLkuI5r2MwqwDG4QVnu2+epXzK4M7V7ic18jjR26mDcLrSFSWxfaNpGTw7j2HbqS7LL+yUR3Vx5mJsU/ZKIsUdxNJxZYjbXvsU1HV0i4EncMRoiJp+s0LvLt2AiefIdogya8a0zLuGzq3vmLHgKH/Z0DqsnnUNBwcpoWp5OHNM/HkJIrIakWmlIMAvmSnaZgsRf8SUk3oovIqlyDUmhIZFPfOP/2gSSWA2J9D42YXN0gGSpsFxWY3flCpKFQjIWCmcX4qw3CodwQ4IoJ67EZgoSzDuRCUv1dD47mYusVdKZ6qNh30y3bZLOVH8d2JbmTclWvGksG5LuVB/8gfkns01Aqkd8+p06ko1C91ueWj0H9PF9qR4xLKhNJHpTPWLsYY8lywQvsah51/Fy5QNem04N/FZhPOir6hLJ6K/qAseKv1DFH5AhXXXsUR9U1WOLVlhVjyu/Kb8NEUIIIYSEcjUTpe134VT4n+S2740p4CKCFeyCQi8IgG5UlGKdVh/1dgJ0k2aDD4kbFNDVkHd83N3IP2Akhf5yqdykUdnCqUYyYraXO9GZ4EOC2cRFYxIifzVznf1O+SWEEEIIIX+fD/YTZKOLiyl8AAAAAElFTkSuQmCC');
+  background-image: url('./static/list-arrow-right.png');
 }
 .icon-list-active {
   transform: rotateZ(180deg);
 }
 .icon-search {
-  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADIBAMAAABfdrOtAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAbUExURUdwTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGnhwewAAAAIdFJOUwCuQR7Hjmrkg+NPwQAABP5JREFUeNrtW0tX00AUzqMNLFN5mGVRwS4rVmAJKtpl5VjNUkCxSxFUlrS0zfxsRTh0kubx3XuTHOXkrpPzzXffM3PHMCqppJJK7qvYj076y41Gv//hcVEQGw/VTM5Xjgog8aWrIjI8zhljaw7iWvZz1dqaSpDV/FT1XiXKj3Y+GJanUmTYLB5DqfFx8RhKBZ+Kx5BrzPYVIBOZ9Z8qSH5KMOoKlAcCg3RREIHxBwqWCRfjmSLIS6ayLmLUcv6nmiy/zU9h88raP46tLQKFRT0rWA3F3OZc1nQZIF5WidqI+N6QjlGLFI6YoLYPpVTCVj9AitmYirGAYERRdiUWOUj+bl1ApQ4npjU+FT1GpumffuXGikUoSaGyRilfLe2/zHThaI54RaiHF6TE12GZ3tSU1aa5Yo9jdpe4qCnD7OA/PsGE82kL9BZn9seZQV3XJd0dJ2RttRkaxshv330/4qQIl6gtQtl2aL5i8Urd3dKCNsnpX1FATFI8tljZTmugRpQcMTVIMiBo2eIWU5OgAZOnLT1193CTELWl6esMNwm5izLh5VlcbWm/ZlauuqB/9tFMUWPkrTlzuuiHPTpIHV2gxzaJZpQMy9uiLY2PWd4RmETTdRuzO2fbNPs73b12GPUqRg+7WGpgnZbYWLfq8/d/um+mu1eXmx3DikhfI7VFS2h0AiicXB6IiZjUETmXlliayEqYB34Wssi7jTX3NBFR9yJ32x89YvgGBDz7iMwDorElC5NZMI8AkCsuCLLKAXXzw9H3ALCbGMSXgiwSQHa5IAsAiCdLXbPaOAQyPRvEBEA8ftMVzpD3B2RcJAhiE78M7xLHSe1fCUZxWqGAXEpzVympfgrUnBEXZACA7EjL7wBY5YKs355F8whw84AL0gWMaoq2J1rD7kp7WaSD7CENNzNDOsgiLSXLK5i6lSxQdqBe2itjOzeQtfXYGnfy2WKP8jhTkB0W1EU7UxOLACufA5wmptWhxO4B+J3oUG0CejrHKCaq64U8Djqz+pBcjmxdNJ4Eh8/Zv/KP0Wu4Z/IvBHzcnDXFTF+UixeHO7xhEi71Znct3OumMeXjoM3T1pREm1Tot0m/WbwJkS7tntXnmN4k3rNucyZEfOKFvEMfE9CvysF/PPpdeYt8K90ijy9oRL5Tmw44IAcMDVOHN+qccbUabQTJ1oZj8DShDycuZX/+RJ++OqMnO2S+0QnPxMFU9BmyrGmi6EQxTsXD53SjE8U4FRMcuYsYhDi/wRrso1KpcUYUyVS69GFLKRX1JubH6NiomErMAOxW4jQ8L1b+RuVK6I2G/TllDBqn0pr79/Tg+S3C+nL60wSYih03ix7s9d+9/pU50Y1TgafqJVQoI+/jLpeKcwEP7/c6bCov8GcINptK8mOg+QcVfCqhaeDkByjtGGdcwkGQByjjm+IpoJL9lOYWQ0LFsD5iGCIq6VlKjZuJKYJCxTAOkzFO9Ua2E+MPuGwkPKkJDlKzHfFMNl5l+9F+vCN8YuHMvTjZO8pM3PTj5c3Di8xnhlIq1wvd6Pcbjb2V/slRE6tBzJPyDMmBCr2cuhWVikquco+s4pVBJfJGcVoGlaBZCEqtjDQZeUJ4ZZRglWKMEqFSFIhZQtCHqRQGYpagrhCVkVEClSujBCquUTyVwDCKpzIqEsSUjqQRzgHOCsW4ecQ/MQoWe71x1DYqqaSSSv5n+Q2ofmQ/EDLIZQAAAABJRU5ErkJggg==');
+  background-image: url('./static/search.png');
 }
+
 .icon-user {
   width: 24px;
   height: 24px;

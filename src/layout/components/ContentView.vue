@@ -22,6 +22,6 @@ const refresh = async () => {
 .content-view {
   box-sizing: border-box;
   position: relative;
-  user-select: text;
+  flex: 1;
 }
 </style>
