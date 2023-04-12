@@ -1,6 +1,6 @@
 :root {
   --color-bg: rgba(237, 243, 248, 1);
-  --color-sider: rgba(255, 255, 255, 1);
+  --color-sider: rgba(255, 255, 255, 0.9);
   /* 默认色彩 */
   --color-red: rgba(255, 59, 48, 1);
   --color-orange: rgba(255, 149, 0, 1);

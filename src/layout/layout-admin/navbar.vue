@@ -55,7 +55,7 @@ const logout = (e: any) => {
   display: flex;
   align-items: center;
   border-bottom: 1px solid rgba(128, 128, 128, 0.2);
-  background-color: var(--color-pr-navbar-bg);
+  background-color: var(--color-sider);
   gap: 8px;
 }
 .content {
