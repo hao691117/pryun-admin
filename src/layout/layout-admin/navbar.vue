@@ -1,7 +1,7 @@
 <template>
   <div class="backdrop-filter navbar">
-    <div class="menu-btn" @click="change_sider_retract">
-      <div class="menu-icon icon-list" :class="[{ 'icon-list-active': sider_retract }]"></div>
+    <div class="menu-btn" @click="storeSystem.setSiderRetract(!siderRetract)">
+      <div class="menu-icon icon-list" :class="[{ 'icon-list-active': siderRetract }]"></div>
     </div>
     <el-breadcrumb separator="/">
       <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
@@ -30,8 +30,11 @@
 </template>
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
-import { sider_retract, change_sider_retract } from './com-data'
+import { StoreSystem } from '@/store/system'
+import { computed } from 'vue'
+const storeSystem = StoreSystem()
 
+const siderRetract = computed(() => storeSystem.siderRetract)
 // import { useDark, useToggle } from '@vueuse/core'
 
 // const isDark = useDark()

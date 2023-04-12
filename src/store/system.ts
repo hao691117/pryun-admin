@@ -12,22 +12,32 @@ export const StoreSystem = defineStore('StoreSystem', {
   // 持久化列表
   persist: [
     {
-      paths: ['dynamicRoutes', 'keepRoutes', 'sidebarActivePath', 'breadcrumb'],
+      paths: ['dynamicRoutes', 'siderRetract', 'siderExpands', 'sidebarActivePath', 'breadcrumb', 'keepRoutes'],
       storage: localStorage,
     },
   ],
   state: () => {
     return {
       first: true, // 首次进入需要重新初始化路由
-      dynamicRoutes: [], // 用户动态路由
-      sidebarActivePath: '', // 侧边栏索引
+      dynamicRoutes: [] as RouteRecordRaw[], // 用户可访问的动态路由
+
+      siderRetract: false, // 是否收回侧边栏
+      siderExpands: [] as string[], // 侧边栏展开项
+
+      sidebarActivePath: '', // 当前侧边栏索引
       breadcrumb: [], // 面包屑
       keepRoutes: [], // 缓存路由
     }
   },
   actions: {
+    setSiderExpands(arr: string[]) {
+      this.siderExpands = arr
+    },
+    setSiderRetract(state: boolean) {
+      this.siderRetract = state
+    },
     // 设置侧边栏索引
-    setSidebarActivePath(path: any) {
+    setSidebarActivePath(path: string) {
       this.sidebarActivePath = path
     },
     // 设置缓存路由
@@ -50,6 +60,9 @@ export const StoreSystem = defineStore('StoreSystem', {
         this.dynamicRoutesInit()
       }
       return _first
+    },
+    change() {
+      this.setSidebarActivePath(router.currentRoute.value.path)
     },
     // 初始化动态路由
     async dynamicRoutesInit(routesPath = []) {

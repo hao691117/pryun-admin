@@ -1,5 +1,5 @@
 <template>
-  <div class="sider" :class="[{ 'sider-min': sider_retract }]">
+  <div class="sider" :class="[{ 'sider-min': siderRetract }]">
     <div class="sider-content">
       <div class="logo">
         <div class="logo-img"></div>
@@ -10,19 +10,19 @@
           <div v-for="(item, index) in dynamicRoutes" :key="index">
             <div class="menus-item" :class="[{ 'menus-item-expand': Expand(item) }]" :style="[Style_menus_item(item)]">
               <!-- 单行 -->
-              <div class="menus-item-row" :class="[{ 'menus-item-row-active': select_path === item.path }]" @click="select(item)">
+              <div class="menus-item-row" :class="[{ 'menus-item-row-active': sidebarActivePath === TopRoute(item).path }]" @click="select(TopRoute(item))">
                 <div class="row-icon">
-                  <img class="row-icon-img" :src="item.meta?.icons?.[0]" alt="" />
+                  <img class="row-icon-img" :src="TopRoute(item).meta?.icons?.[0]" alt="" />
                 </div>
-                <div class="row-title">{{ item.meta?.['title'] }}</div>
-                <div v-if="HasChildren(item)" class="row-arrow"></div>
+                <div class="row-title">{{ TopRoute(item).meta?.['title'] }}</div>
+                <div v-if="HasChildren(TopRoute(item))" class="row-arrow"></div>
               </div>
               <!-- 多行 -->
               <div v-if="HasChildren(item)" class="menus-item-rows">
                 <div v-for="(item2, index2) in item.children" :key="index2">
                   <div class="menus-item" :style="[Style_menus_item(item2)]">
                     <!-- 单行 -->
-                    <div class="menus-item-row" :class="[{ 'menus-item-row-active': select_path === item2.path }]" @click="select(item2)">
+                    <div class="menus-item-row" :class="[{ 'menus-item-row-active': sidebarActivePath === item2.path }]" @click="select(item2)">
                       <div class="row-icon">
                         <img class="row-icon-img" :src="item2.meta?.icons?.[0]" alt="" />
                       </div>
@@ -40,39 +40,45 @@
   </div>
 </template>
 <script setup lang="ts">
-import { sider_retract } from './com-data'
-
 import { ref, nextTick, computed, watch } from 'vue'
 import { StoreSystem } from '@/store/system'
-import { useRoute, useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 
-const route = useRoute()
 const router = useRouter()
-console.log('\x1b[38;2;0;151;255m%c%s\x1b[0m', 'color:#0097ff;padding:16px 0;', `------->Breathe:route`, route)
 const storeSystem = StoreSystem()
 
 // 动态路由列表
-const dynamicRoutes = ref<RouteRecordRaw[]>(storeSystem.dynamicRoutes)
+const dynamicRoutes = computed(() => storeSystem.dynamicRoutes)
+const siderRetract = computed(() => storeSystem.siderRetract)
+const siderExpands = computed(() => storeSystem.siderExpands)
 
-// 选择菜单
-const select_path = ref('')
-const select_list = ref<string[]>([])
+const sidebarActivePath = computed(() => storeSystem.sidebarActivePath)
+
 const select = (route: RouteRecordRaw) => {
-  console.log('\x1b[38;2;0;151;255m%c%s\x1b[0m', 'color:#0097ff;padding:16px 0;', `------->Breathe:route`, route)
   const { path, children = [] } = route
   // 如果没有下一级 表示跳转路由
-  if (children.length <= 1 || sider_retract.value) {
-    select_path.value = path
+  if (children.length <= 1 || siderRetract.value) {
     return router.push(path)
   }
-  const index = select_list.value.findIndex((_path) => _path === path)
+  const index = siderExpands.value.findIndex((_path) => _path === path)
+  let _siderExpands: string[] = [...siderExpands.value]
   if (index === -1) {
-    select_list.value.push(path)
+    _siderExpands.push(path)
   } else {
-    select_list.value.splice(index, 1)
+    _siderExpands.splice(index, 1)
   }
+  storeSystem.setSiderExpands(_siderExpands)
 }
+
+// 计算顶级菜单
+const TopRoute = computed(() => {
+  return function (route: RouteRecordRaw) {
+    const { children = [] } = route
+    if (children.length === 1) return children[0]
+    return route
+  }
+})
 
 // 计算展开的高度
 const Style_menus_item = computed(() => {
@@ -97,7 +103,7 @@ const HasChildren = computed(() => {
 const Expand = computed(() => {
   return function (route: RouteRecordRaw) {
     const { path } = route
-    return select_list.value.includes(path) && !sider_retract.value
+    return siderExpands.value.includes(path) && !siderRetract.value
   }
 })
 </script>
