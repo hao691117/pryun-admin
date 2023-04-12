@@ -15,7 +15,7 @@
     <el-dropdown trigger="click">
       <div class="menu-btn">
         <div class="menu-icon icon-user">
-          <img class="menu-icon-img" src="https://pryun.oss-cn-chengdu.aliyuncs.com/pryun/avatars/1680485639112_11BB.jpg" alt="" />
+          <img class="menu-icon-img" src="https://pryun.oss-cn-chengdu.aliyuncs.com/pryun/avatars/1681185499682_A0A7.jpg" alt="" />
         </div>
         <div class="menu-text">Breathe</div>
       </div>
