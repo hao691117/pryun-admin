@@ -25,7 +25,7 @@ export const StoreSystem = defineStore('StoreSystem', {
       siderExpands: [] as string[], // 侧边栏展开项
 
       sidebarActivePath: '', // 当前侧边栏索引
-      breadcrumb: [], // 面包屑
+      breadcrumb: [] as RouteRecordRaw[], // 面包屑
       keepRoutes: [], // 缓存路由
     }
   },
@@ -45,8 +45,8 @@ export const StoreSystem = defineStore('StoreSystem', {
       this.keepRoutes = keepRoutes
     },
     // 设置面包屑
-    setBreadcrumb(breadcrumb = []) {
-      this.breadcrumb = breadcrumb
+    setBreadcrumb(currentRoute: RouteRecordRaw[]) {
+      this.breadcrumb = currentRoute
     },
     // 初始化系统数据
     async init() {
@@ -62,7 +62,12 @@ export const StoreSystem = defineStore('StoreSystem', {
       return _first
     },
     change() {
-      this.setSidebarActivePath(router.currentRoute.value.path)
+      const currentRoute = router.currentRoute.value // 当前路由
+      this.setSidebarActivePath(currentRoute.path)
+      // 属于侧边栏菜单路由
+      if (!currentRoute.meta.hideInSider) {
+        this.setBreadcrumb(currentRoute.matched)
+      }
     },
     // 初始化动态路由
     async dynamicRoutesInit(routesPath = []) {

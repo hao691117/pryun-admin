@@ -19,6 +19,15 @@ export const dynamicRoutes: RouteRecordRaw[] = [
         },
       },
       {
+        name: 'test-index2',
+        path: '/test/test-index2',
+        component: () => import('@/views/test/test-index2.vue'),
+        meta: {
+          icons: [icons.share_fill],
+          title: '示例二',
+        },
+      },
+      {
         name: 'test-details',
         path: '/test/test-details',
         component: () => import('@/views/test/test-details.vue'),
@@ -41,28 +50,10 @@ export const dynamicRoutes: RouteRecordRaw[] = [
         path: '/workbench/workbench-index',
         meta: {
           icons: [icons.workbench],
-          title: '工作台',
+          title: '代办事项',
           showFooter: false,
         },
         component: () => import('../views/workbench/workbench-index.vue'),
-      },
-    ],
-  },
-  {
-    name: 'overview',
-    path: '/overview',
-    meta: { icons: [icons.exterior], title: '系统总览' },
-    redirect: '/overview/overview-index',
-    children: [
-      {
-        name: 'overview-index',
-        path: '/overview/overview-index',
-        meta: {
-          icons: [icons.exterior],
-          title: '系统总览',
-          showFooter: false,
-        },
-        component: () => import('../views/overview/overview-index.vue'),
       },
     ],
   },
@@ -123,7 +114,6 @@ export const dynamicRoutes: RouteRecordRaw[] = [
         meta: {
           icons: [icons.user],
           title: '用户列表',
-          hideInSider: true,
         },
         component: () => import('../views/users/users-index.vue'),
       },
@@ -149,7 +139,7 @@ export const dynamicRoutes: RouteRecordRaw[] = [
         name: 'system-role',
         path: '/system/system-role',
         meta: {
-          icons: [icons.set],
+          icons: [icons.user],
           title: '角色管理',
         },
         component: () => import('../views/system/system-role.vue'),
@@ -167,7 +157,7 @@ export const dynamicRoutes: RouteRecordRaw[] = [
         name: 'system-theme',
         path: '/system/system-theme',
         meta: {
-          icons: [icons.set],
+          icons: [icons.exterior],
           title: '系统主题',
         },
         component: () => import('../views/system/system-theme.vue'),
@@ -176,7 +166,7 @@ export const dynamicRoutes: RouteRecordRaw[] = [
         name: 'system-log',
         path: '/system/system-log',
         meta: {
-          icons: [icons.set],
+          icons: [icons.order],
           title: '系统日志',
         },
         component: () => import('../views/system/system-log.vue'),

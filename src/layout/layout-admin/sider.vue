@@ -75,7 +75,8 @@ const select = (route: RouteRecordRaw) => {
 const TopRoute = computed(() => {
   return function (route: RouteRecordRaw) {
     const { children = [] } = route
-    if (children.length === 1) return children[0]
+    const _children = children.filter((item) => !item.meta?.hideInSider) // 过滤掉隐藏路由
+    if (_children.length === 1) return _children[0]
     return route
   }
 })
@@ -84,8 +85,9 @@ const TopRoute = computed(() => {
 const Style_menus_item = computed(() => {
   return function (route: RouteRecordRaw) {
     const { children = [] } = route
+    const _children = children.filter((item) => !item.meta?.hideInSider) // 过滤掉隐藏路由
     let style = {
-      '--height': `${children.length * 50}px`,
+      '--height': `${_children.length * 50}px`,
     }
     return style
   }
@@ -95,7 +97,8 @@ const Style_menus_item = computed(() => {
 const HasChildren = computed(() => {
   return function (route: RouteRecordRaw) {
     const { children = [] } = route
-    return children.length > 1
+    const _children = children.filter((item) => !item.meta?.hideInSider) // 过滤掉隐藏路由
+    return _children.length > 1
   }
 })
 
