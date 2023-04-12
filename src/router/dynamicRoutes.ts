@@ -33,14 +33,14 @@ export const dynamicRoutes: RouteRecordRaw[] = [
   {
     name: 'workbench',
     path: '/workbench',
-    meta: { icons: [icons.order], title: '工作台' },
+    meta: { icons: [icons.workbench], title: '工作台' },
     redirect: '/workbench/workbench-index',
     children: [
       {
         name: 'workbench-index',
         path: '/workbench/workbench-index',
         meta: {
-          icons: [icons.icon_vue],
+          icons: [icons.workbench],
           title: '工作台',
           showFooter: false,
         },
@@ -87,14 +87,14 @@ export const dynamicRoutes: RouteRecordRaw[] = [
   {
     name: 'datav',
     path: '/datav',
-    meta: { icons: [icons.exterior], title: '可视化大屏' },
+    meta: { icons: [icons.chart], title: '可视化大屏' },
     redirect: '/datav/datav-index',
     children: [
       {
         name: 'datav-index',
         path: '/datav/datav-index',
         meta: {
-          icons: [icons.icon_vue],
+          icons: [icons.chart],
           title: '可视化大屏',
           showFooter: false,
         },

@@ -44,10 +44,12 @@ import { sider_retract } from './com-data'
 
 import { ref, nextTick, computed, watch } from 'vue'
 import { StoreSystem } from '@/store/system'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 
+const route = useRoute()
 const router = useRouter()
+console.log('\x1b[38;2;0;151;255m%c%s\x1b[0m', 'color:#0097ff;padding:16px 0;', `------->Breathe:route`, route)
 const storeSystem = StoreSystem()
 
 // 动态路由列表
