@@ -21,6 +21,7 @@ import Footer from './footer.vue'
 .layout-admin {
   box-sizing: border-box;
   width: 100%;
+  /* min-width: 800px; */
   display: flex;
   transition: all 230ms ease-out;
   color: var(--color-text);

@@ -35,11 +35,8 @@ watch(
   position: relative;
   box-sizing: border-box;
   flex: 1;
-  height: 100%;
 }
-.content-view-body {
-  height: 100%;
-}
+
 .fade-enter-active,
 .fade-leave-active {
   position: absolute;

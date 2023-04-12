@@ -163,13 +163,18 @@ const logout = (e: any) => {
 .breadcrumb {
   display: flex;
   align-items: center;
+  flex-wrap: nowrap;
 }
 .breadcrumb-item {
   display: flex;
   align-items: center;
+  flex-wrap: nowrap;
 }
 .breadcrumb-item-span {
   padding: 0 8px;
+}
+.breadcrumb-item-text {
+  white-space: nowrap;
 }
 .breadcrumb-item-hover:hover {
   color: #0097ff;
