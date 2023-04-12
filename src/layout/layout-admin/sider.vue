@@ -113,7 +113,7 @@ const Expand = computed(() => {
 <style scoped>
 .sider {
   position: relative;
-  z-index: 20;
+  z-index: 9;
   width: 280px;
   transition: inherit;
 }

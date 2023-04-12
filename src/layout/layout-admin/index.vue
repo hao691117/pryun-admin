@@ -1,9 +1,11 @@
 <template>
   <div class="layout-admin">
     <Sider></Sider>
-    <div class="content">
+    <div class="body">
       <Navbar></Navbar>
-      <slot></slot>
+      <div class="body-view">
+        <slot></slot>
+      </div>
       <Footer></Footer>
     </div>
     <!-- <div class="safe-area-inset-bottom" style="background-color: red"></div> -->
@@ -25,10 +27,16 @@ import Footer from './footer.vue'
   background-color: var(--color-bg);
 }
 
-.content {
+.body {
   width: 0;
   flex: 1;
   display: flex;
   flex-direction: column;
+}
+.body-view {
+  position: relative;
+  height: 0;
+  flex: 1;
+  z-index: 0;
 }
 </style>
