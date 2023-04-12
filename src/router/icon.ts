@@ -1,6 +1,8 @@
 import icon_vue from '@/assets/vue.svg'
 import icon_logo from '@/assets/logo.svg'
-import relation from '@/assets/relation.svg'
+import order from '@/assets/order.svg'
+import user from '@/assets/user.svg'
+import code from '@/assets/code.svg'
 import exterior from '@/assets/exterior.svg'
 import set from '@/assets/set.svg'
 import share_fill from '@/assets/share-fill.svg'
@@ -8,10 +10,12 @@ import share_fill from '@/assets/share-fill.svg'
 // route.meat 使用的所有icon
 
 export const icons = {
-  icon_vue: icon_vue,
-  icon_logo: icon_logo,
-  relation: relation,
-  exterior: exterior,
-  share_fill: share_fill,
+  icon_vue,
+  user,
+  code,
+  icon_logo,
+  order,
+  exterior,
+  share_fill,
   set,
 }

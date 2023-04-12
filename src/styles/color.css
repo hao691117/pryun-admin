@@ -1,6 +1,6 @@
 :root {
-  --color-bg: rgba(230, 230, 230, 1);
-
+  --color-bg: rgba(237, 243, 248, 1);
+  --color-sider: rgba(255, 255, 255, 1);
   /* 默认色彩 */
   --color-red: rgba(255, 59, 48, 1);
   --color-orange: rgba(255, 149, 0, 1);
@@ -29,7 +29,8 @@
   --color-mask: rgba(28, 28, 28, 0.5);
 
   /* 组件颜色 */
-  --color-pr-navbar-bg: rgba(242, 241, 246, 0.5);
+  --color-pr-navbar-bg: rgba(255, 255, 255, 1);
+  /* --color-pr-navbar-bg: rgba(242, 241, 246, 0.5); */
   --color-pr-navbar-border: rgba(232, 231, 236, 1);
 
   --color-pr-tabbar-bg: rgba(242, 241, 246, 0.5);

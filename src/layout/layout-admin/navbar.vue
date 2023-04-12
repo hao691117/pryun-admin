@@ -52,11 +52,10 @@ const logout = (e: any) => {
   padding: 0 16px;
   box-sizing: border-box;
   z-index: 9;
-  border-radius: inherit inherit 0 0;
-  transition: inherit;
   display: flex;
   align-items: center;
   border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+  background-color: var(--color-pr-navbar-bg);
   gap: 8px;
 }
 .content {
@@ -95,9 +94,10 @@ const logout = (e: any) => {
 }
 .icon-list {
   background-image: url('./static/list-arrow-right.png');
+  transform: rotateZ(180deg);
 }
 .icon-list-active {
-  transform: rotateZ(180deg);
+  transform: rotateZ(0deg);
 }
 .icon-search {
   background-image: url('./static/search.png');
