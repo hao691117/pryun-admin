@@ -7,7 +7,7 @@
       </div>
       <div class="sider-view">
         <div class="menus">
-          <div v-for="(item, index) in dynamicRoutes" :key="index">
+          <div v-for="(item, index) in dynamicRoutes" :key="item.path">
             <div class="menus-item" :class="[{ 'menus-item-expand': Expand(item) }]" :style="[Style_menus_item(item)]">
               <!-- 单行 -->
               <div class="menus-item-row" :class="[{ 'menus-item-row-active': sidebarActivePath === TopRoute(item).path }]" @click="select(TopRoute(item))">
@@ -19,7 +19,7 @@
               </div>
               <!-- 多行 -->
               <div v-if="HasChildren(item)" class="menus-item-rows">
-                <div v-for="(item2, index2) in item.children" :key="index2">
+                <div v-for="(item2, index2) in item.children" :key="item2.path">
                   <div class="menus-item" :style="[Style_menus_item(item2)]">
                     <!-- 单行 -->
                     <div class="menus-item-row" :class="[{ 'menus-item-row-active': sidebarActivePath === item2.path }]" @click="select(item2)">
@@ -40,7 +40,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref, nextTick, computed, watch } from 'vue'
+import { ref, nextTick, computed } from 'vue'
 import { StoreSystem } from '@/store/system'
 import { useRouter } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'

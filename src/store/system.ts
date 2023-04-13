@@ -19,6 +19,7 @@ export const StoreSystem = defineStore('StoreSystem', {
   state: () => {
     return {
       first: true, // 首次进入需要重新初始化路由
+      refreshKey: 0, // 刷新或者切换页面
       dynamicRoutes: [] as RouteRecordRaw[], // 用户可访问的动态路由
 
       siderRetract: false, // 是否收回侧边栏
@@ -50,7 +51,20 @@ export const StoreSystem = defineStore('StoreSystem', {
     setKeepRoutes(keepRoutes: RouteLocationNormalizedLoaded[]) {
       this.keepRoutes = keepRoutes
     },
-
+    // 移除缓存路由
+    removeKeepRoutes(path: string) {
+      const index = this.keepRoutes.findIndex((item) => item.path === path)
+      let _keepRoutes = [...this.keepRoutes]
+      if (index !== -1) {
+        _keepRoutes.splice(index, 1)
+      }
+      // 如果删除的是当前页面
+      if (this.sidebarActivePath === path) {
+        const endRoute = _keepRoutes[index - 1]
+        router.push(endRoute.path)
+      }
+      this.setKeepRoutes(_keepRoutes)
+    },
     // 初始化系统数据
     async init() {
       // 刷新后需要重新加载路由
@@ -68,6 +82,10 @@ export const StoreSystem = defineStore('StoreSystem', {
       const currentRoute = router.currentRoute.value // 当前路由
       const { path, meta, matched } = currentRoute
       if (path === '/') return
+
+      window.scrollTo({ top: 0 }) // 需要把滚动条滑到最上方 不然过渡动画有问题 参考element-admin
+      this.refreshKey = new Date().getTime()
+
       this.setSidebarActivePath(path)
       // 属于侧边栏菜单路由 更新面包屑
       if (!meta.hideInSider) {

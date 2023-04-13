@@ -46,7 +46,7 @@
               <img class="keepRoutes-list-item-icon-img" :src="item.meta?.icons?.[0] || ''" alt="" />
             </div>
             <div class="keepRoutes-list-item-text">{{ item.meta?.title }}</div>
-            <div class="keepRoutes-list-item-close"></div>
+            <div class="keepRoutes-list-item-close" @click.stop="close(item.path)"></div>
           </div>
         </TransitionGroup>
       </div>
@@ -76,8 +76,14 @@ const sidebarActivePath = computed(() => storeSystem.sidebarActivePath)
 // const isDark = useDark()
 // const toggleDark = useToggle(isDark)
 
+// 选中切换
 const select = (path: string) => {
   router.push(path)
+}
+
+// 关闭标签
+const close = (path: string) => {
+  storeSystem.removeKeepRoutes(path)
 }
 
 const Breadcrumb = computed(() => {

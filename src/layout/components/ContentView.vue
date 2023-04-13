@@ -2,33 +2,26 @@
   <div class="content-view">
     <!-- 使用动态过渡名称 -->
     <router-view v-slot="{ Component }">
-      <transition :name="transitionName">
-        <div class="content-view-body" :key="refreshKey">
-          <component :is="Component" />
-        </div>
-      </transition>
+      <keep-alive>
+        <transition :name="transitionName">
+          <div class="content-view-body" :key="refreshKey">
+            <component :is="Component" />
+          </div>
+        </transition>
+      </keep-alive>
     </router-view>
   </div>
 </template>
 <script lang="ts" setup>
-import { ref, nextTick, watch } from 'vue'
+import { ref, computed, watch } from 'vue'
+import { StoreSystem } from '@/store/system'
 import { useRoute } from 'vue-router'
 const route = useRoute()
+const storeSystem = StoreSystem()
 
 const transitionName = ref('fade')
-// 刷新
-const refreshKey = ref(0)
-const refresh = async () => {
-  await nextTick()
-  refreshKey.value = new Date().getTime()
-}
-watch(
-  () => route.path,
-  (a) => {
-    window.scrollTo({ top: 0 }) // 需要把滚动条滑到最上方 不然过渡动画有问题 参考element-admin
-    refreshKey.value = new Date().getTime()
-  }
-)
+
+const refreshKey = computed(() => storeSystem.refreshKey)
 </script>
 <style scoped>
 .content-view {
