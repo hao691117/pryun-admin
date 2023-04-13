@@ -29,6 +29,7 @@ const KeepRoutes = computed(() => {
   position: relative;
   box-sizing: border-box;
   flex: 1;
+  width: 100%;
 }
 
 .fade-enter-active,
@@ -37,7 +38,7 @@ const KeepRoutes = computed(() => {
   left: 0;
   top: 0;
   width: 100%;
-  transition: all 500ms ease-out;
+  transition: all 230ms ease-out;
 }
 
 .fade-enter-from {

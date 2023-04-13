@@ -51,7 +51,7 @@
         </TransitionGroup>
       </div>
       <div class="content-flex-1"></div>
-      <div class="menu-btn">
+      <div class="menu-btn" @click="storeSystem.refresh">
         <div class="menu-icon icon-refresh"></div>
       </div>
     </div>

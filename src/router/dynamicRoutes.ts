@@ -7,7 +7,7 @@ export const dynamicRoutes: RouteRecordRaw[] = [
     name: 'test',
     path: '/test',
     redirect: '/test/test-index',
-    meta: { icons: [icons.share_fill], title: '测试示例' },
+    meta: { icons: [icons.share_fill], title: '开发示例' },
     children: [
       {
         name: 'test-index',
@@ -15,16 +15,16 @@ export const dynamicRoutes: RouteRecordRaw[] = [
         component: () => import('@/views/test/test-index.vue'),
         meta: {
           icons: [icons.share_fill],
-          title: '示例一',
+          title: '基本示例',
         },
       },
       {
-        name: 'test-index2',
-        path: '/test/test-index2',
-        component: () => import('@/views/test/test-index2.vue'),
+        name: 'test-table',
+        path: '/test/test-table',
+        component: () => import('@/views/test/test-table.vue'),
         meta: {
           icons: [icons.share_fill],
-          title: '示例二',
+          title: '表格示例',
         },
       },
       {
