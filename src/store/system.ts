@@ -65,16 +65,17 @@ export const StoreSystem = defineStore('StoreSystem', {
     removeKeepRoutes(path: string) {
       const index = this.keepRoutes.findIndex((item) => item.path === path)
       // 存在
-      if (index !== -1) {
+      if (index !== -1 && this.keepRoutes.length > 1) {
         this.keepRoutes.splice(index, 1)
         // 如果存在 说明即将删除删除的是当前页面
         if (this.sidebarActivePath === path) {
-          const endRoute = this.keepRoutes[index - 1]
+          // 删除后的页面地址
+          const newIndex = Math.max(0, index - 1)
+          const endRoute = this.keepRoutes[newIndex]
           router.push(endRoute.path)
         }
       }
     },
-
     // 初始化系统数据
     async init() {
       // 刷新后需要重新加载路由
@@ -88,6 +89,7 @@ export const StoreSystem = defineStore('StoreSystem', {
       }
       return _first
     },
+    // 路由改变后对应的一些变化
     change() {
       const currentRoute = router.currentRoute.value // 当前路由
       const { path, meta, matched } = currentRoute
