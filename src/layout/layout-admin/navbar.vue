@@ -23,6 +23,9 @@
       <div class="menu-btn">
         <div class="menu-icon icon-search"></div>
       </div>
+      <div class="menu-btn">
+        <div class="menu-icon icon-screen-full"></div>
+      </div>
       <el-dropdown trigger="click">
         <div class="menu-btn">
           <div class="menu-icon icon-user">
@@ -136,6 +139,7 @@ const logout = (e: any) => {
   display: flex;
   align-items: center;
   gap: 8px;
+  /* overflow-x: overlay; */
 }
 .keepRoutes-list-item {
   background-color: rgba(255, 255, 255, 0);
@@ -143,6 +147,7 @@ const logout = (e: any) => {
   padding: 0 8px;
   height: 32px;
   display: flex;
+  flex-wrap: nowrap;
   align-items: center;
   cursor: pointer;
   transition: all 230ms ease-out;
@@ -161,6 +166,7 @@ const logout = (e: any) => {
   height: 100%;
 }
 .keepRoutes-list-item-text {
+  white-space: nowrap;
 }
 .keepRoutes-list-item-close {
   position: relative;
@@ -234,8 +240,11 @@ const logout = (e: any) => {
 .icon-search {
   background-image: url('./static/search.png');
 }
+.icon-screen-full {
+  background-image: url('./static/screen-full.png');
+}
 .icon-refresh {
-  background-image: url('./static/loading.png');
+  background-image: url('./static/refresh.png');
 }
 
 .icon-user {
