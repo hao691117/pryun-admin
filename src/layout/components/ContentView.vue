@@ -1,14 +1,10 @@
 <template>
   <div class="content-view">
-    <!-- 使用动态过渡名称 -->
-    <router-view v-slot="{ Component, route }">
-      <transition :name="transitionName">
-        <div class="content-view-body" :key="route.path + refreshKey">
-          <KeepAlive v-if="route.meta.keepAlive !== false">
-            <component :is="Component"></component>
-          </KeepAlive>
-          <component v-else :is="Component"></component>
-        </div>
+    <router-view v-slot="{ Component }">
+      <transition :name="transitionName" mode="out-in">
+        <KeepAlive :include="KeepRoutes">
+          <component :is="Component" :key="$route.fullPath + refreshKey" />
+        </KeepAlive>
       </transition>
     </router-view>
   </div>
@@ -16,8 +12,6 @@
 <script lang="ts" setup>
 import { ref, computed, watch } from 'vue'
 import { StoreSystem } from '@/store/system'
-import { useRoute } from 'vue-router'
-const route = useRoute()
 const storeSystem = StoreSystem()
 
 const transitionName = ref('fade')
@@ -26,8 +20,7 @@ const refreshKey = computed(() => storeSystem.refreshKey)
 const keepRoutes = computed(() => storeSystem.keepRoutes)
 
 const KeepRoutes = computed(() => {
-  // let arr: any = Array.from(keepRoutes.value, (item) => item.name)
-  let arr = ['test-index2']
+  let arr: any = Array.from(keepRoutes.value, (item) => item.name)
   return arr
 })
 </script>
