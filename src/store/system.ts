@@ -1,7 +1,7 @@
 import router from '@/router/index'
 import { dynamicRoutes } from '@/router/dynamicRoutes'
 
-import type { RouteRecordRaw } from 'vue-router'
+import type { RouteRecordRaw, RouteLocationNormalizedLoaded } from 'vue-router'
 import { defineStore } from 'pinia'
 
 import Layout from '@/layout/index.vue'
@@ -26,13 +26,11 @@ export const StoreSystem = defineStore('StoreSystem', {
 
       sidebarActivePath: '', // 当前侧边栏索引
       breadcrumb: [] as RouteRecordRaw[], // 面包屑
-      keepRoutes: [], // 缓存路由
+      keepRoutes: [] as RouteLocationNormalizedLoaded[], // 缓存路由
     }
   },
   actions: {
-    setSiderExpands(arr: string[]) {
-      this.siderExpands = arr
-    },
+    // 设置侧边栏展开
     setSiderRetract(state: boolean) {
       this.siderRetract = state
     },
@@ -40,14 +38,19 @@ export const StoreSystem = defineStore('StoreSystem', {
     setSidebarActivePath(path: string) {
       this.sidebarActivePath = path
     },
-    // 设置缓存路由
-    setKeepRoutes(keepRoutes = []) {
-      this.keepRoutes = keepRoutes
+    // 设置侧边栏菜单展开
+    setSiderExpands(arr: string[]) {
+      this.siderExpands = arr
     },
     // 设置面包屑
     setBreadcrumb(currentRoute: RouteRecordRaw[]) {
       this.breadcrumb = currentRoute
     },
+    // 设置缓存路由
+    setKeepRoutes(keepRoutes: RouteLocationNormalizedLoaded[]) {
+      this.keepRoutes = keepRoutes
+    },
+
     // 初始化系统数据
     async init() {
       // 刷新后需要重新加载路由
@@ -63,10 +66,21 @@ export const StoreSystem = defineStore('StoreSystem', {
     },
     change() {
       const currentRoute = router.currentRoute.value // 当前路由
-      this.setSidebarActivePath(currentRoute.path)
-      // 属于侧边栏菜单路由
-      if (!currentRoute.meta.hideInSider) {
-        this.setBreadcrumb(currentRoute.matched)
+      const { path, meta, matched } = currentRoute
+      if (path === '/') return
+      this.setSidebarActivePath(path)
+      // 属于侧边栏菜单路由 更新面包屑
+      if (!meta.hideInSider) {
+        this.setBreadcrumb(matched)
+      }
+      // 路由变化后更新缓存路由列表
+      if (meta.keepAlive !== false) {
+        const index = this.keepRoutes.findIndex((item) => item.path === path)
+        let _keepRoutes = [...this.keepRoutes]
+        if (index === -1) {
+          _keepRoutes.push(currentRoute)
+        }
+        this.setKeepRoutes(_keepRoutes)
       }
     },
     // 初始化动态路由

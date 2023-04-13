@@ -1,41 +1,60 @@
 <template>
   <div class="backdrop-filter navbar">
-    <div class="menu-btn" @click="storeSystem.setSiderRetract(!siderRetract)">
-      <div class="menu-icon icon-list" :class="[{ 'icon-list-active': siderRetract }]"></div>
-    </div>
-    <div class="breadcrumb">
-      <TransitionGroup name="list">
-        <div class="breadcrumb-item" v-for="(item, index) in Breadcrumb" :key="item.path">
-          <div v-if="index !== 0" class="breadcrumb-item-span">/</div>
-          <el-dropdown trigger="click">
-            <div class="breadcrumb-item-text" :class="[{ 'breadcrumb-item-text-hover': Children(item).length }]">{{ item.meta?.title }}</div>
-            <template v-if="Children(item).length" #dropdown>
-              <el-dropdown-menu>
-                <el-dropdown-item v-for="(item2, index2) in Children(item)" :key="index2" :disabled="item2.path === sidebarActivePath" @click="select(item2)">{{ item2.meta?.title }}</el-dropdown-item>
-              </el-dropdown-menu>
-            </template>
-          </el-dropdown>
-        </div>
-      </TransitionGroup>
-    </div>
-    <div class="content"></div>
-    <div class="menu-btn">
-      <div class="menu-icon icon-search"></div>
-    </div>
-    <el-dropdown trigger="click">
-      <div class="menu-btn">
-        <div class="menu-icon icon-user">
-          <img class="menu-icon-img" src="https://pryun.oss-cn-chengdu.aliyuncs.com/pryun/avatars/1681185499682_A0A7.jpg" alt="" />
-        </div>
-        <div class="menu-text">Breathe</div>
+    <div class="navbar-content">
+      <div class="menu-btn" @click="storeSystem.setSiderRetract(!siderRetract)">
+        <div class="menu-icon icon-list" :class="[{ 'icon-list-active': siderRetract }]"></div>
       </div>
-      <template #dropdown>
-        <el-dropdown-menu>
-          <el-dropdown-item>个人资料</el-dropdown-item>
-          <el-dropdown-item @click="logout">注销登录</el-dropdown-item>
-        </el-dropdown-menu>
-      </template>
-    </el-dropdown>
+      <div class="breadcrumb">
+        <TransitionGroup name="list">
+          <div class="breadcrumb-item" v-for="(item, index) in Breadcrumb" :key="item.path">
+            <div v-if="index !== 0" class="breadcrumb-item-span">/</div>
+            <el-dropdown trigger="click">
+              <div class="breadcrumb-item-text" :class="[{ 'breadcrumb-item-text-hover': Children(item).length }]">{{ item.meta?.title }}</div>
+              <template v-if="Children(item).length" #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item v-for="(item2, index2) in Children(item)" :key="index2" :disabled="item2.path === sidebarActivePath" @click="select(item2.path)">{{ item2.meta?.title }}</el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
+          </div>
+        </TransitionGroup>
+      </div>
+      <div class="content-flex-1"></div>
+      <div class="menu-btn">
+        <div class="menu-icon icon-search"></div>
+      </div>
+      <el-dropdown trigger="click">
+        <div class="menu-btn">
+          <div class="menu-icon icon-user">
+            <img class="menu-icon-img" src="https://pryun.oss-cn-chengdu.aliyuncs.com/pryun/avatars/1681185499682_A0A7.jpg" alt="" />
+          </div>
+          <div class="menu-text">Breathe</div>
+        </div>
+        <template #dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item>个人资料</el-dropdown-item>
+            <el-dropdown-item @click="logout">注销登录</el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
+      </el-dropdown>
+    </div>
+    <div class="navbar-content navbar-keepRoutes">
+      <div class="keepRoutes-list">
+        <TransitionGroup name="list">
+          <div class="keepRoutes-list-item" :class="[{ 'keepRoutes-list-item-active': item.path === sidebarActivePath }]" v-for="(item, index) in keepRoutes" :key="item.path" @click="select(item.path)">
+            <div class="keepRoutes-list-item-icon">
+              <img class="keepRoutes-list-item-icon-img" :src="item.meta?.icons?.[0] || ''" alt="" />
+            </div>
+            <div class="keepRoutes-list-item-text">{{ item.meta?.title }}</div>
+            <div class="keepRoutes-list-item-close"></div>
+          </div>
+        </TransitionGroup>
+      </div>
+      <div class="content-flex-1"></div>
+      <div class="menu-btn">
+        <div class="menu-icon icon-refresh"></div>
+      </div>
+    </div>
   </div>
 </template>
 <script setup lang="ts">
@@ -49,6 +68,7 @@ const storeSystem = StoreSystem()
 
 const siderRetract = computed(() => storeSystem.siderRetract)
 const breadcrumb = computed(() => storeSystem.breadcrumb)
+const keepRoutes = computed(() => storeSystem.keepRoutes)
 const sidebarActivePath = computed(() => storeSystem.sidebarActivePath)
 
 // import { useDark, useToggle } from '@vueuse/core'
@@ -56,8 +76,7 @@ const sidebarActivePath = computed(() => storeSystem.sidebarActivePath)
 // const isDark = useDark()
 // const toggleDark = useToggle(isDark)
 
-const select = (route: RouteRecordRaw) => {
-  const { path } = route
+const select = (path: string) => {
   router.push(path)
 }
 
@@ -90,46 +109,90 @@ const logout = (e: any) => {
   position: sticky;
   top: 0;
   left: 0;
-  height: 78px;
-  flex-shrink: 0;
-  padding: 0 16px;
-  box-sizing: border-box;
-  z-index: 9;
-  display: flex;
-  align-items: center;
   border-bottom: 1px solid rgba(128, 128, 128, 0.2);
   background-color: var(--color-sider);
+  z-index: 9;
+  flex-shrink: 0;
+}
+.navbar-content {
+  height: 68px;
+  padding: 0 16px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
   gap: 8px;
 }
-.list-move, /* 对移动中的元素应用的过渡 */
-.list-enter-active,
-.list-leave-active {
-  transition: all 500ms ease-out;
+.navbar-keepRoutes {
+  height: 50px;
+}
+.keepRoutes-list {
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.keepRoutes-list-item {
+  background-color: rgba(255, 255, 255, 0);
+  border-radius: 6px;
+  padding: 0 8px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: all 230ms ease-out;
+}
+.keepRoutes-list-item:hover,
+.keepRoutes-list-item-active {
+  background-color: #dad8d8;
+}
+.keepRoutes-list-item-icon {
+  margin-right: 8px;
+  width: 16px;
+  height: 16px;
+}
+.keepRoutes-list-item-icon-img {
+  width: 100%;
+  height: 100%;
+}
+.keepRoutes-list-item-text {
+}
+.keepRoutes-list-item-close {
+  position: relative;
+  margin-left: 4px;
+  padding: 4px;
+  line-height: 1;
+  box-sizing: border-box;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0);
+  transition: all 230ms ease-out;
+}
+.keepRoutes-list-item-close::after {
+  content: '';
+  width: 100%;
+  height: 100%;
+  background-image: url('./static/cross.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+.keepRoutes-list-item-close:hover {
+  background-color: rgba(128, 128, 128, 0.5);
 }
 
-.list-enter-from {
-  opacity: 0;
-  transform: translateX(-20px);
-}
-.list-leave-to {
-  opacity: 0;
-  transform: translateX(80px);
-}
-
-/* 确保将离开的元素从布局流中删除
-  以便能够正确地计算移动的动画。 */
-.list-leave-active {
-  position: absolute;
-}
-.content {
+.content-flex-1 {
   width: 0;
   flex: 1;
 }
 
 .menu-btn {
-  padding: 12px 16px;
-  min-width: 44px;
-  min-height: 44px;
+  padding: 8px 16px;
+  min-width: 40px;
+  min-height: 40px;
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -165,6 +228,9 @@ const logout = (e: any) => {
 .icon-search {
   background-image: url('./static/search.png');
 }
+.icon-refresh {
+  background-image: url('./static/loading.png');
+}
 
 .icon-user {
   width: 24px;
@@ -186,6 +252,7 @@ const logout = (e: any) => {
 }
 .breadcrumb-item-span {
   padding: 0 8px;
+  line-height: 1;
 }
 .breadcrumb-item-text {
   white-space: nowrap;
@@ -195,5 +262,26 @@ const logout = (e: any) => {
   opacity: 1;
   transition: all 230ms ease-out;
   cursor: pointer;
+}
+
+.list-move, /* 对移动中的元素应用的过渡 */
+.list-enter-active,
+.list-leave-active {
+  transition: all 500ms ease-out;
+}
+
+.list-enter-from {
+  opacity: 0;
+  transform: translateX(-20px);
+}
+.list-leave-to {
+  opacity: 0;
+  transform: translateX(80px);
+}
+
+/* 确保将离开的元素从布局流中删除
+  以便能够正确地计算移动的动画。 */
+.list-leave-active {
+  position: absolute;
 }
 </style>
