@@ -112,15 +112,14 @@ const Expand = computed(() => {
 </script>
 <style scoped>
 .sider {
-  position: relative;
+  position: sticky;
+  top: 0;
   z-index: 9;
   width: 280px;
+  height: 100vh;
   transition: inherit;
 }
 .sider-content {
-  position: sticky;
-  left: 0;
-  top: 0;
   width: 100%;
   min-height: 100vh;
   height: 100vh;

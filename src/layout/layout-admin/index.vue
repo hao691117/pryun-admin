@@ -29,6 +29,7 @@ import Footer from './footer.vue'
 }
 
 .body {
+  /* padding-left: 280px; */
   width: 0;
   flex: 1;
   display: flex;
