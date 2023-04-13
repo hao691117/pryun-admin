@@ -7,9 +7,14 @@
       <TransitionGroup name="list">
         <div class="breadcrumb-item" v-for="(item, index) in Breadcrumb" :key="item.path">
           <div v-if="index !== 0" class="breadcrumb-item-span">/</div>
-          <div class="breadcrumb-item-text">
-            {{ item.meta?.title }}
-          </div>
+          <el-dropdown trigger="click">
+            <div class="breadcrumb-item-text" :class="[{ 'breadcrumb-item-text-hover': Children(item).length }]">{{ item.meta?.title }}</div>
+            <template v-if="Children(item).length" #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item v-for="(item2, index2) in Children(item)" :key="index2" :disabled="item2.path === sidebarActivePath" @click="select(item2)">{{ item2.meta?.title }}</el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
         </div>
       </TransitionGroup>
     </div>
@@ -38,23 +43,23 @@ import { useRouter } from 'vue-router'
 import { StoreSystem } from '@/store/system'
 import { computed } from 'vue'
 import type { RouteRecordRaw } from 'vue-router'
+
+const router = useRouter()
 const storeSystem = StoreSystem()
 
 const siderRetract = computed(() => storeSystem.siderRetract)
 const breadcrumb = computed(() => storeSystem.breadcrumb)
+const sidebarActivePath = computed(() => storeSystem.sidebarActivePath)
 
 // import { useDark, useToggle } from '@vueuse/core'
 
 // const isDark = useDark()
 // const toggleDark = useToggle(isDark)
 
-const Hide = computed(() => {
-  return function (route: RouteRecordRaw) {
-    const { children = [] } = route
-    if (children.length === 1) return false
-    return true
-  }
-})
+const select = (route: RouteRecordRaw) => {
+  const { path } = route
+  router.push(path)
+}
 
 const Breadcrumb = computed(() => {
   let arr = []
@@ -67,7 +72,15 @@ const Breadcrumb = computed(() => {
   return arr
 })
 
-const router = useRouter()
+const Children = computed(() => {
+  return function (route: RouteRecordRaw) {
+    const { children = [] } = route
+    const _children = children.filter((item) => !item.meta?.hideInSider) // 过滤掉隐藏路由
+    if (_children.length <= 1) return []
+    return _children
+  }
+})
+
 const logout = (e: any) => {
   router.push('/login')
 }
@@ -169,6 +182,7 @@ const logout = (e: any) => {
   display: flex;
   align-items: center;
   flex-wrap: nowrap;
+  color: #000000;
 }
 .breadcrumb-item-span {
   padding: 0 8px;
@@ -176,7 +190,10 @@ const logout = (e: any) => {
 .breadcrumb-item-text {
   white-space: nowrap;
 }
-.breadcrumb-item-hover:hover {
-  color: #0097ff;
+
+.breadcrumb-item-text-hover {
+  opacity: 1;
+  transition: all 230ms ease-out;
+  cursor: pointer;
 }
 </style>
