@@ -10,7 +10,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { ref, computed, watch } from 'vue'
+import { ref, computed } from 'vue'
 import { StoreSystem } from '@/store/system'
 const storeSystem = StoreSystem()
 

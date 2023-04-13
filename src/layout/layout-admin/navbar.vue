@@ -6,13 +6,13 @@
       </div>
       <div class="breadcrumb">
         <TransitionGroup name="list">
-          <div class="breadcrumb-item" v-for="(item, index) in Breadcrumb" :key="item.path">
+          <div v-for="(item, index) in Breadcrumb" :key="item.path" class="breadcrumb-item">
             <div v-if="index !== 0" class="breadcrumb-item-span">/</div>
             <el-dropdown trigger="click">
               <div class="breadcrumb-item-text" :class="[{ 'breadcrumb-item-text-hover': Children(item).length }]">{{ item.meta?.title }}</div>
               <template v-if="Children(item).length" #dropdown>
                 <el-dropdown-menu>
-                  <el-dropdown-item v-for="(item2, index2) in Children(item)" :key="index2" :disabled="item2.path === sidebarActivePath" @click="select(item2.path)">{{ item2.meta?.title }}</el-dropdown-item>
+                  <el-dropdown-item v-for="(item2, index2) in Children(item)" :disabled="item2.path === sidebarActivePath" @click="select(item2.path)">{{ item2.meta?.title }}</el-dropdown-item>
                 </el-dropdown-menu>
               </template>
             </el-dropdown>
@@ -41,7 +41,7 @@
     <div class="navbar-content navbar-keepRoutes">
       <div class="keepRoutes-list">
         <TransitionGroup name="list">
-          <div class="keepRoutes-list-item" :class="[{ 'keepRoutes-list-item-active': item.path === sidebarActivePath }]" v-for="(item, index) in keepRoutes" :key="item.path" @click="select(item.path)">
+          <div v-for="(item, index) in keepRoutes" :key="item.path" class="keepRoutes-list-item" :class="[{ 'keepRoutes-list-item-active': item.path === sidebarActivePath }]" @click="select(item.path)">
             <div class="keepRoutes-list-item-icon">
               <img class="keepRoutes-list-item-icon-img" :src="item.meta?.icons?.[0] || ''" alt="" />
             </div>

@@ -42,9 +42,14 @@ export const StoreSystem = defineStore('StoreSystem', {
     setSidebarActivePath(path: string) {
       this.sidebarActivePath = path
     },
-    // 设置侧边栏菜单展开
-    setSiderExpands(arr: string[]) {
-      this.siderExpands = arr
+    // 侧边栏菜单展开
+    changeSiderExpands(path: string) {
+      const index = this.siderExpands.findIndex((_path) => _path === path)
+      if (index === -1) {
+        this.siderExpands.push(path)
+      } else {
+        this.siderExpands.splice(index, 1)
+      }
     },
     // 设置面包屑
     setBreadcrumb(currentRoute: RouteRecordRaw[]) {

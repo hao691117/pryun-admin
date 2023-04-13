@@ -7,7 +7,7 @@
       </div>
       <div class="sider-view">
         <div class="menus">
-          <div v-for="(item, index) in dynamicRoutes" :key="item.path">
+          <div v-for="(item, index) in dynamicRoutes" :key="index">
             <div class="menus-item" :class="[{ 'menus-item-expand': Expand(item) }]" :style="[Style_menus_item(item)]">
               <!-- 单行 -->
               <div class="menus-item-row" :class="[{ 'menus-item-row-active': sidebarActivePath === TopRoute(item).path }]" @click="select(TopRoute(item))">
@@ -19,7 +19,7 @@
               </div>
               <!-- 多行 -->
               <div v-if="HasChildren(item)" class="menus-item-rows">
-                <div v-for="(item2, index2) in item.children" :key="item2.path">
+                <div v-for="(item2, index2) in item.children" :key="index2">
                   <div class="menus-item" :style="[Style_menus_item(item2)]">
                     <!-- 单行 -->
                     <div class="menus-item-row" :class="[{ 'menus-item-row-active': sidebarActivePath === item2.path }]" @click="select(item2)">
@@ -40,7 +40,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref, nextTick, computed } from 'vue'
+import { ref, computed } from 'vue'
 import { StoreSystem } from '@/store/system'
 import { useRouter } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
@@ -48,27 +48,19 @@ import type { RouteRecordRaw } from 'vue-router'
 const router = useRouter()
 const storeSystem = StoreSystem()
 
-// 动态路由列表
-const dynamicRoutes = computed(() => storeSystem.dynamicRoutes)
+const dynamicRoutes = computed(() => storeSystem.dynamicRoutes) // 动态路由列表
 const siderRetract = computed(() => storeSystem.siderRetract)
 const siderExpands = computed(() => storeSystem.siderExpands)
-
 const sidebarActivePath = computed(() => storeSystem.sidebarActivePath)
 
+// 选择菜单
 const select = (route: RouteRecordRaw) => {
   const { path, children = [] } = route
   // 如果没有下一级 表示跳转路由
   if (children.length <= 1 || siderRetract.value) {
     return router.push(path)
   }
-  const index = siderExpands.value.findIndex((_path) => _path === path)
-  let _siderExpands: string[] = [...siderExpands.value]
-  if (index === -1) {
-    _siderExpands.push(path)
-  } else {
-    _siderExpands.splice(index, 1)
-  }
-  storeSystem.setSiderExpands(_siderExpands)
+  storeSystem.changeSiderExpands(path)
 }
 
 // 计算顶级菜单
