@@ -1,13 +1,10 @@
+import { defineStore } from 'pinia'
+import Layout from '@/layout/index.vue'
 import router from '@/router/index'
 import { dynamicRoutes } from '@/router/dynamicRoutes'
-
-import type { RouteRecordRaw, RouteLocationNormalizedLoaded } from 'vue-router'
-import { defineStore } from 'pinia'
-
-import Layout from '@/layout/index.vue'
+import type { RouteRecordRaw } from 'vue-router'
 
 // 系统相关的
-
 export const StoreSystem = defineStore('StoreSystem', {
   // 持久化列表
   persist: [
@@ -27,7 +24,7 @@ export const StoreSystem = defineStore('StoreSystem', {
 
       sidebarActivePath: '', // 当前侧边栏索引
       breadcrumb: [] as RouteRecordRaw[], // 面包屑
-      keepRoutes: [] as RouteLocationNormalizedLoaded[], // 缓存路由
+      keepRoutes: [] as RouteRecordRaw[], // 缓存路由
     }
   },
   actions: {
@@ -51,28 +48,33 @@ export const StoreSystem = defineStore('StoreSystem', {
         this.siderExpands.splice(index, 1)
       }
     },
-    // 设置面包屑
-    setBreadcrumb(currentRoute: RouteRecordRaw[]) {
-      this.breadcrumb = currentRoute
+    // 更新面包屑
+    updateBreadcrumb(arr: RouteRecordRaw[]) {
+      this.breadcrumb = arr
     },
-    // 设置缓存路由
-    setKeepRoutes(keepRoutes: RouteLocationNormalizedLoaded[]) {
-      this.keepRoutes = keepRoutes
+    // 更新缓存路由
+    addKeepRoutes(route: RouteRecordRaw) {
+      const { path } = route
+      const index = this.keepRoutes.findIndex((item) => item.path === path)
+      // 不存在 添加
+      if (index === -1) {
+        this.keepRoutes.push(route)
+      }
     },
     // 移除缓存路由
     removeKeepRoutes(path: string) {
       const index = this.keepRoutes.findIndex((item) => item.path === path)
-      let _keepRoutes = [...this.keepRoutes]
+      // 存在
       if (index !== -1) {
-        _keepRoutes.splice(index, 1)
+        this.keepRoutes.splice(index, 1)
+        // 如果存在 说明即将删除删除的是当前页面
+        if (this.sidebarActivePath === path) {
+          const endRoute = this.keepRoutes[index - 1]
+          router.push(endRoute.path)
+        }
       }
-      // 如果删除的是当前页面
-      if (this.sidebarActivePath === path) {
-        const endRoute = _keepRoutes[index - 1]
-        router.push(endRoute.path)
-      }
-      this.setKeepRoutes(_keepRoutes)
     },
+
     // 初始化系统数据
     async init() {
       // 刷新后需要重新加载路由
@@ -92,18 +94,20 @@ export const StoreSystem = defineStore('StoreSystem', {
       if (path === '/') return
       window.scrollTo({ top: 0 }) // 需要把滚动条滑到最上方 不然过渡动画有问题 参考element-admin
       this.setSidebarActivePath(path)
+
       // 属于侧边栏菜单路由 更新面包屑
       if (!meta.hideInSider) {
-        this.setBreadcrumb(matched)
+        const arr = matched.map((item) => {
+          const { name, path, meta, children } = item
+          return { name, path, meta, children }
+        })
+        this.updateBreadcrumb(arr)
       }
       // 路由变化后更新缓存路由列表
       if (meta.keepAlive !== false) {
-        const index = this.keepRoutes.findIndex((item) => item.path === path)
-        let _keepRoutes = [...this.keepRoutes]
-        if (index === -1) {
-          _keepRoutes.push(currentRoute)
-        }
-        this.setKeepRoutes(_keepRoutes)
+        const { name, path, meta, children } = matched[matched.length - 1]
+        let obj = { name, path, meta, children }
+        this.addKeepRoutes(obj)
       }
     },
     // 初始化动态路由
