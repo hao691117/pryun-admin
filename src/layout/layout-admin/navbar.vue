@@ -156,6 +156,7 @@ const logout = (e: any) => {
 .keepRoutes-list-item-active {
   background-color: #dad8d8;
 }
+
 .keepRoutes-list-item-icon {
   margin-right: 8px;
   width: 16px;
@@ -311,7 +312,7 @@ const logout = (e: any) => {
 .keepRoutesTansition-enter-from,
 .keepRoutesTansition-leave-to {
   opacity: 0;
-  transform: scaleY(0.01) translateX(-30px);
+  transform: scaleY(0.01) translateX(30px);
 }
 
 /* 3. 确保离开的项目被移除出了布局流
