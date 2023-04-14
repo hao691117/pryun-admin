@@ -64,10 +64,15 @@ export const StoreSystem = defineStore('StoreSystem', {
         // 如果存在 说明即将删除删除的是当前页面
         const currentRoute = router.currentRoute.value // 当前路由
         if (currentRoute.fullPath === path) {
-          // 删除后的页面地址
-          const newIndex = Math.max(0, index - 1)
-          const endRoute = this.keepRoutes[newIndex]
-          router.push(endRoute.path)
+          // 如果有上级路由
+          if (currentRoute.meta.hideInSider) {
+            router.push(currentRoute.meta.hideInSider)
+          } else {
+            // 删除后的页面地址
+            const newIndex = Math.max(0, index - 1)
+            const endRoute = this.keepRoutes[newIndex]
+            router.push(endRoute.path)
+          }
         }
       }
     },

@@ -33,9 +33,8 @@ const props = defineProps({
 
 const goBack = async () => {
   const { fullPath, meta } = route
+  console.log('\x1b[38;2;0;151;255m%c%s\x1b[0m', 'color:#0097ff;padding:16px 0;', `------->Breathe:meta`, meta)
   if (meta.hideInSider) {
-    router.push(meta.hideInSider)
-    await nextTick()
     storeSystem.removeKeepRoutes(fullPath)
   } else {
     router.go(-1)
