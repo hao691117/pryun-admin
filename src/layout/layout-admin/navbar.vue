@@ -1,3 +1,56 @@
+<script setup lang="ts">
+import { useRoute, useRouter } from 'vue-router'
+import { StoreSystem } from '@/store/system'
+import { computed } from 'vue'
+import type { RouteRecordRaw } from 'vue-router'
+
+const router = useRouter()
+const storeSystem = StoreSystem()
+
+const siderRetract = computed(() => storeSystem.siderRetract)
+const breadcrumb = computed(() => storeSystem.breadcrumb)
+const keepRoutes = computed(() => storeSystem.keepRoutes)
+
+// import { useDark, useToggle } from '@vueuse/core'
+
+// const isDark = useDark()
+// const toggleDark = useToggle(isDark)
+
+// 选中切换
+const select = (path: string) => {
+  router.push(path)
+}
+
+// 关闭标签
+const close = (path: string) => {
+  storeSystem.removeKeepRoutes(path)
+}
+
+const Breadcrumb = computed(() => {
+  let arr = []
+  for (const item of breadcrumb.value) {
+    const { children = [] } = item
+    if (children.length !== 1) {
+      arr.push(item)
+    }
+  }
+  return arr
+})
+
+const Children = computed(() => {
+  return function (route: RouteRecordRaw) {
+    const { children = [] } = route
+    const _children = children.filter((item) => !item.meta?.hideInSider) // 过滤掉隐藏路由
+    if (_children.length <= 1) return []
+    return _children
+  }
+})
+
+const logout = (e: any) => {
+  router.push('/login')
+}
+</script>
+
 <template>
   <div class="backdrop-filter navbar">
     <div class="navbar-content">
@@ -58,58 +111,6 @@
     </div>
   </div>
 </template>
-<script setup lang="ts">
-import { useRoute, useRouter } from 'vue-router'
-import { StoreSystem } from '@/store/system'
-import { computed } from 'vue'
-import type { RouteRecordRaw } from 'vue-router'
-
-const router = useRouter()
-const storeSystem = StoreSystem()
-
-const siderRetract = computed(() => storeSystem.siderRetract)
-const breadcrumb = computed(() => storeSystem.breadcrumb)
-const keepRoutes = computed(() => storeSystem.keepRoutes)
-
-// import { useDark, useToggle } from '@vueuse/core'
-
-// const isDark = useDark()
-// const toggleDark = useToggle(isDark)
-
-// 选中切换
-const select = (path: string) => {
-  router.push(path)
-}
-
-// 关闭标签
-const close = (path: string) => {
-  storeSystem.removeKeepRoutes(path)
-}
-
-const Breadcrumb = computed(() => {
-  let arr = []
-  for (const item of breadcrumb.value) {
-    const { children = [] } = item
-    if (children.length !== 1) {
-      arr.push(item)
-    }
-  }
-  return arr
-})
-
-const Children = computed(() => {
-  return function (route: RouteRecordRaw) {
-    const { children = [] } = route
-    const _children = children.filter((item) => !item.meta?.hideInSider) // 过滤掉隐藏路由
-    if (_children.length <= 1) return []
-    return _children
-  }
-})
-
-const logout = (e: any) => {
-  router.push('/login')
-}
-</script>
 <style scoped>
 .navbar {
   position: sticky;
@@ -132,6 +133,7 @@ const logout = (e: any) => {
   height: 50px;
 }
 .keepRoutes-list {
+  position: relative;
   padding: 0 8px;
   display: flex;
   align-items: center;
@@ -144,6 +146,7 @@ const logout = (e: any) => {
   border-radius: 6px;
   padding: 0 8px;
   height: 32px;
+  width: fit-content;
   display: flex;
   flex-wrap: nowrap;
   align-items: center;
@@ -297,23 +300,24 @@ const logout = (e: any) => {
 .breadcrumbTransition-leave-active {
   position: absolute;
 }
-/* 对移动中的元素应用的过渡 */
+
+/* 1. 声明过渡效果 */
 .keepRoutesTansition-move,
 .keepRoutesTansition-enter-active,
 .keepRoutesTansition-leave-active {
-  transition: all 500ms ease-out;
+  transition: all 1000ms cubic-bezier(0.55, 0, 0.1, 1);
 }
 
+/* 2. 声明进入和离开的状态 */
 .keepRoutesTansition-enter-from,
 .keepRoutesTansition-leave-to {
   opacity: 0;
-  transform: translateX(-30px);
+  transform: scaleX(0.01) translate(30px, 0);
 }
 
-/* 确保将离开的元素从布局流中删除
-  以便能够正确地计算移动的动画。 */
+/* 3. 确保离开的项目被移除出了布局流
+      以便正确地计算移动时的动画效果。 */
 .keepRoutesTansition-leave-active {
   position: absolute;
-  /* right: 0; */
 }
 </style>

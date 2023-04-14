@@ -39,7 +39,8 @@ const KeepRoutes = computed(() => {
   left: 0;
   top: 0;
   width: 100%;
-  transition: all 230ms ease-out;
+  /* transition: all 230ms ease-out; */
+  transition: all 500ms cubic-bezier(0.55, 0, 0.1, 1);
 }
 
 .fade-enter-from {
