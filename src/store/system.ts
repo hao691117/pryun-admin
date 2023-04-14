@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import Layout from '@/layout/index.vue'
 import router from '@/router/index'
 import { dynamicRoutes } from '@/router/dynamicRoutes'
-import type { RouteRecordRaw } from 'vue-router'
+import { RouteRecordRaw, stringifyQuery } from 'vue-router'
 
 // 系统相关的
 export const StoreSystem = defineStore('StoreSystem', {
@@ -21,8 +21,6 @@ export const StoreSystem = defineStore('StoreSystem', {
 
       siderRetract: false, // 是否收回侧边栏
       siderExpands: [] as string[], // 侧边栏展开项
-
-      sidebarActivePath: '', // 当前侧边栏索引
       breadcrumb: [] as RouteRecordRaw[], // 面包屑
       keepRoutes: [] as RouteRecordRaw[], // 缓存路由
     }
@@ -34,10 +32,6 @@ export const StoreSystem = defineStore('StoreSystem', {
     // 设置侧边栏展开
     setSiderRetract(state: boolean) {
       this.siderRetract = state
-    },
-    // 设置侧边栏索引
-    setSidebarActivePath(path: string) {
-      this.sidebarActivePath = path
     },
     // 侧边栏菜单展开
     changeSiderExpands(path: string) {
@@ -68,7 +62,8 @@ export const StoreSystem = defineStore('StoreSystem', {
       if (index !== -1 && this.keepRoutes.length > 1) {
         this.keepRoutes.splice(index, 1)
         // 如果存在 说明即将删除删除的是当前页面
-        if (this.sidebarActivePath === path) {
+        const currentRoute = router.currentRoute.value // 当前路由
+        if (currentRoute.fullPath === path) {
           // 删除后的页面地址
           const newIndex = Math.max(0, index - 1)
           const endRoute = this.keepRoutes[newIndex]
@@ -92,10 +87,9 @@ export const StoreSystem = defineStore('StoreSystem', {
     // 路由改变后对应的一些变化
     change() {
       const currentRoute = router.currentRoute.value // 当前路由
-      const { path, meta, matched } = currentRoute
+      const { path, fullPath, meta, matched } = currentRoute
       if (path === '/') return
       window.scrollTo({ top: 0 }) // 需要把滚动条滑到最上方 不然过渡动画有问题 参考element-admin
-
       // 属于侧边栏菜单路由 更新面包屑
       if (!meta.hideInSider) {
         const arr = matched.map((item) => {
@@ -103,12 +97,11 @@ export const StoreSystem = defineStore('StoreSystem', {
           return { name, path, meta, children }
         })
         this.updateBreadcrumb(arr)
-        this.setSidebarActivePath(path)
       }
       // 路由变化后更新缓存路由列表
       if (meta.keepAlive !== false) {
-        const { name, path, meta, children } = matched[matched.length - 1]
-        let obj = { name, path, meta, children }
+        const { name, meta, children } = matched[matched.length - 1]
+        let obj = { name, path: fullPath, meta, children }
         this.addKeepRoutes(obj)
       }
     },

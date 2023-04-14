@@ -34,8 +34,7 @@ export const dynamicRoutes: RouteRecordRaw[] = [
         meta: {
           icons: [icons.set],
           title: '详情',
-          hideInSider: true,
-          keepAlive: false,
+          hideInSider: '/test/test-index',
         },
       },
     ],
@@ -124,7 +123,7 @@ export const dynamicRoutes: RouteRecordRaw[] = [
         meta: {
           icons: [icons.user],
           title: '用户详情',
-          hideInSider: true,
+          hideInSider: '/users/users-info',
         },
         component: () => import('../views/users/users-info.vue'),
       },

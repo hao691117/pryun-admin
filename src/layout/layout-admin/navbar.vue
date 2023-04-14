@@ -5,14 +5,14 @@
         <div class="menu-icon icon-list" :class="[{ 'icon-list-active': siderRetract }]"></div>
       </div>
       <div class="breadcrumb">
-        <TransitionGroup name="list">
+        <TransitionGroup name="breadcrumbTransition">
           <div v-for="(item, index) in Breadcrumb" :key="item.path" class="breadcrumb-item">
             <div v-if="index !== 0" class="breadcrumb-item-span">/</div>
             <el-dropdown trigger="click">
               <div class="breadcrumb-item-text" :class="[{ 'breadcrumb-item-text-hover': Children(item).length }]">{{ item.meta?.title }}</div>
               <template v-if="Children(item).length" #dropdown>
                 <el-dropdown-menu>
-                  <el-dropdown-item v-for="(item2, index2) in Children(item)" :disabled="item2.path === sidebarActivePath" @click="select(item2.path)">{{ item2.meta?.title }}</el-dropdown-item>
+                  <el-dropdown-item v-for="(item2, index2) in Children(item)" :disabled="item2.path === $route.path" @click="select(item2.path)">{{ item2.meta?.title }}</el-dropdown-item>
                 </el-dropdown-menu>
               </template>
             </el-dropdown>
@@ -42,17 +42,15 @@
       </el-dropdown>
     </div>
     <div class="navbar-content navbar-keepRoutes">
-      <div class="keepRoutes-list">
-        <TransitionGroup name="list">
-          <div v-for="(item, index) in keepRoutes" :key="item.path" class="keepRoutes-list-item" :class="[{ 'keepRoutes-list-item-active': item.path === sidebarActivePath }]" @click="select(item.path)">
-            <div class="keepRoutes-list-item-icon">
-              <img class="keepRoutes-list-item-icon-img" :src="item.meta?.icons?.[0] || ''" alt="" />
-            </div>
-            <div class="keepRoutes-list-item-text">{{ item.meta?.title }}</div>
-            <div class="keepRoutes-list-item-close" @click.stop="close(item.path)"></div>
+      <TransitionGroup class="keepRoutes-list" name="keepRoutesTansition" tag="div">
+        <div v-for="(item, index) in keepRoutes" :key="item.path" class="keepRoutes-list-item" :class="[{ 'keepRoutes-list-item-active': item.path === $route.fullPath }]" @click="select(item.path)">
+          <div class="keepRoutes-list-item-icon">
+            <img class="keepRoutes-list-item-icon-img" :src="item.meta?.icons?.[0] || ''" alt="" />
           </div>
-        </TransitionGroup>
-      </div>
+          <div class="keepRoutes-list-item-text">{{ item.meta?.title }}</div>
+          <div class="keepRoutes-list-item-close" @click.stop="close(item.path)"></div>
+        </div>
+      </TransitionGroup>
       <div class="content-flex-1"></div>
       <div class="menu-btn" @click="storeSystem.refresh">
         <div class="menu-icon icon-refresh"></div>
@@ -61,7 +59,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { StoreSystem } from '@/store/system'
 import { computed } from 'vue'
 import type { RouteRecordRaw } from 'vue-router'
@@ -72,7 +70,6 @@ const storeSystem = StoreSystem()
 const siderRetract = computed(() => storeSystem.siderRetract)
 const breadcrumb = computed(() => storeSystem.breadcrumb)
 const keepRoutes = computed(() => storeSystem.keepRoutes)
-const sidebarActivePath = computed(() => storeSystem.sidebarActivePath)
 
 // import { useDark, useToggle } from '@vueuse/core'
 
@@ -142,6 +139,7 @@ const logout = (e: any) => {
   /* overflow-x: overlay; */
 }
 .keepRoutes-list-item {
+  position: relative;
   background-color: rgba(255, 255, 255, 0);
   border-radius: 6px;
   padding: 0 8px;
@@ -279,24 +277,43 @@ const logout = (e: any) => {
   cursor: pointer;
 }
 
-.list-move, /* 对移动中的元素应用的过渡 */
-.list-enter-active,
-.list-leave-active {
+/* 对移动中的元素应用的过渡 */
+.breadcrumbTransition-move,
+.breadcrumbTransition-enter-active,
+.breadcrumbTransition-leave-active {
   transition: all 500ms ease-out;
 }
 
-.list-enter-from {
+.breadcrumbTransition-enter-from {
   opacity: 0;
-  transform: translateX(-20px);
+  transform: translateX(-30px);
 }
-.list-leave-to {
+.breadcrumbTransition-leave-to {
   opacity: 0;
-  transform: translateX(80px);
 }
 
 /* 确保将离开的元素从布局流中删除
   以便能够正确地计算移动的动画。 */
-.list-leave-active {
+.breadcrumbTransition-leave-active {
   position: absolute;
+}
+/* 对移动中的元素应用的过渡 */
+.keepRoutesTansition-move,
+.keepRoutesTansition-enter-active,
+.keepRoutesTansition-leave-active {
+  transition: all 500ms ease-out;
+}
+
+.keepRoutesTansition-enter-from,
+.keepRoutesTansition-leave-to {
+  opacity: 0;
+  transform: translateX(-30px);
+}
+
+/* 确保将离开的元素从布局流中删除
+  以便能够正确地计算移动的动画。 */
+.keepRoutesTansition-leave-active {
+  position: absolute;
+  /* right: 0; */
 }
 </style>

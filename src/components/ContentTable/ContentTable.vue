@@ -16,9 +16,13 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
+import { StoreSystem } from '@/store/system'
+import { nextTick } from 'vue'
 
+const route = useRoute()
 const router = useRouter()
+const storeSystem = StoreSystem()
 
 const props = defineProps({
   title: {
@@ -27,8 +31,15 @@ const props = defineProps({
   },
 })
 
-const goBack = () => {
-  router.go(-1)
+const goBack = async () => {
+  const { fullPath, meta } = route
+  if (meta.hideInSider) {
+    router.push(meta.hideInSider)
+    await nextTick()
+    storeSystem.removeKeepRoutes(fullPath)
+  } else {
+    router.go(-1)
+  }
 }
 </script>
 <style lang="scss" scoped>
@@ -37,8 +48,11 @@ const goBack = () => {
   width: 100%;
   height: 100%;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
   .card-content {
-    height: 100%;
+    height: 0;
+    flex: 1;
     background-color: #ffffff;
     border-radius: 12px;
     overflow: hidden;

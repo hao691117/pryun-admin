@@ -10,7 +10,7 @@
           <div v-for="(item, index) in dynamicRoutes" :key="index">
             <div class="menus-item" :class="[{ 'menus-item-expand': Expand(item) }]" :style="[Style_menus_item(item)]">
               <!-- 单行 -->
-              <div class="menus-item-row" :class="[{ 'menus-item-row-active': sidebarActivePath === TopRoute(item).path }]" @click="select(TopRoute(item))">
+              <div class="menus-item-row" :class="[{ 'menus-item-row-active': MenusItemActive(TopRoute(item).path) }]" @click="select(TopRoute(item))">
                 <div class="row-icon">
                   <img class="row-icon-img" :src="TopRoute(item).meta?.icons?.[0]" alt="" />
                 </div>
@@ -22,7 +22,7 @@
                 <div v-for="(item2, index2) in item.children" :key="index2">
                   <div class="menus-item" :style="[Style_menus_item(item2)]">
                     <!-- 单行 -->
-                    <div class="menus-item-row" :class="[{ 'menus-item-row-active': sidebarActivePath === item2.path }]" @click="select(item2)">
+                    <div class="menus-item-row" :class="[{ 'menus-item-row-active': MenusItemActive(item2.path) }]" @click="select(item2)">
                       <div class="row-icon">
                         <img class="row-icon-img" :src="item2.meta?.icons?.[0]" alt="" />
                       </div>
@@ -42,16 +42,16 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { StoreSystem } from '@/store/system'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 
+const route = useRoute()
 const router = useRouter()
 const storeSystem = StoreSystem()
 
 const dynamicRoutes = computed(() => storeSystem.dynamicRoutes) // 动态路由列表
 const siderRetract = computed(() => storeSystem.siderRetract)
 const siderExpands = computed(() => storeSystem.siderExpands)
-const sidebarActivePath = computed(() => storeSystem.sidebarActivePath)
 
 // 选择菜单
 const select = (route: RouteRecordRaw) => {
@@ -99,6 +99,18 @@ const Expand = computed(() => {
   return function (route: RouteRecordRaw) {
     const { path } = route
     return siderExpands.value.includes(path) && !siderRetract.value
+  }
+})
+
+// 是否已激活
+const MenusItemActive = computed(() => {
+  return function (_path: string) {
+    const { path, meta } = route
+    let active = path === _path
+    if (meta && meta.hideInSider) {
+      active = meta.hideInSider === _path
+    }
+    return active
   }
 })
 </script>
