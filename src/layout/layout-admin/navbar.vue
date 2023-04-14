@@ -1,56 +1,3 @@
-<script setup lang="ts">
-import { useRoute, useRouter } from 'vue-router'
-import { StoreSystem } from '@/store/system'
-import { computed } from 'vue'
-import type { RouteRecordRaw } from 'vue-router'
-
-const router = useRouter()
-const storeSystem = StoreSystem()
-
-const siderRetract = computed(() => storeSystem.siderRetract)
-const breadcrumb = computed(() => storeSystem.breadcrumb)
-const keepRoutes = computed(() => storeSystem.keepRoutes)
-
-// import { useDark, useToggle } from '@vueuse/core'
-
-// const isDark = useDark()
-// const toggleDark = useToggle(isDark)
-
-// 选中切换
-const select = (path: string) => {
-  router.push(path)
-}
-
-// 关闭标签
-const close = (path: string) => {
-  storeSystem.removeKeepRoutes(path)
-}
-
-const Breadcrumb = computed(() => {
-  let arr = []
-  for (const item of breadcrumb.value) {
-    const { children = [] } = item
-    if (children.length !== 1) {
-      arr.push(item)
-    }
-  }
-  return arr
-})
-
-const Children = computed(() => {
-  return function (route: RouteRecordRaw) {
-    const { children = [] } = route
-    const _children = children.filter((item) => !item.meta?.hideInSider) // 过滤掉隐藏路由
-    if (_children.length <= 1) return []
-    return _children
-  }
-})
-
-const logout = (e: any) => {
-  router.push('/login')
-}
-</script>
-
 <template>
   <div class="backdrop-filter navbar">
     <div class="navbar-content">
@@ -111,6 +58,58 @@ const logout = (e: any) => {
     </div>
   </div>
 </template>
+<script setup lang="ts">
+import { useRoute, useRouter } from 'vue-router'
+import { StoreSystem } from '@/store/system'
+import { computed } from 'vue'
+import type { RouteRecordRaw } from 'vue-router'
+
+const router = useRouter()
+const storeSystem = StoreSystem()
+
+const siderRetract = computed(() => storeSystem.siderRetract)
+const breadcrumb = computed(() => storeSystem.breadcrumb)
+const keepRoutes = computed(() => storeSystem.keepRoutes)
+
+// import { useDark, useToggle } from '@vueuse/core'
+
+// const isDark = useDark()
+// const toggleDark = useToggle(isDark)
+
+// 选中切换
+const select = (path: string) => {
+  router.push(path)
+}
+
+// 关闭标签
+const close = (path: string) => {
+  storeSystem.removeKeepRoutes(path)
+}
+
+const Breadcrumb = computed(() => {
+  let arr = []
+  for (const item of breadcrumb.value) {
+    const { children = [] } = item
+    if (children.length !== 1) {
+      arr.push(item)
+    }
+  }
+  return arr
+})
+
+const Children = computed(() => {
+  return function (route: RouteRecordRaw) {
+    const { children = [] } = route
+    const _children = children.filter((item) => !item.meta?.hideInSider) // 过滤掉隐藏路由
+    if (_children.length <= 1) return []
+    return _children
+  }
+})
+
+const logout = (e: any) => {
+  router.push('/login')
+}
+</script>
 <style scoped>
 .navbar {
   position: sticky;
