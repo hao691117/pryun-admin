@@ -35,6 +35,7 @@ export const dynamicRoutes: RouteRecordRaw[] = [
           icons: [icons.set],
           title: '详情',
           hideInSider: true,
+          keepAlive: false,
         },
       },
     ],

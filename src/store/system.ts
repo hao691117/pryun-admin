@@ -95,7 +95,6 @@ export const StoreSystem = defineStore('StoreSystem', {
       const { path, meta, matched } = currentRoute
       if (path === '/') return
       window.scrollTo({ top: 0 }) // 需要把滚动条滑到最上方 不然过渡动画有问题 参考element-admin
-      this.setSidebarActivePath(path)
 
       // 属于侧边栏菜单路由 更新面包屑
       if (!meta.hideInSider) {
@@ -104,6 +103,7 @@ export const StoreSystem = defineStore('StoreSystem', {
           return { name, path, meta, children }
         })
         this.updateBreadcrumb(arr)
+        this.setSidebarActivePath(path)
       }
       // 路由变化后更新缓存路由列表
       if (meta.keepAlive !== false) {
