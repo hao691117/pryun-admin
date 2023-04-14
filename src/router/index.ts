@@ -7,12 +7,16 @@ const routes = [
   {
     path: '/',
     redirect: '/workbench',
+    meta: {
+      keepAlive: false,
+    },
   },
   {
     name: 'login',
     path: '/login',
     meta: {
       title: '登录',
+      keepAlive: false,
     },
     component: () => import('@/views/login/login-index.vue'),
   },
@@ -20,6 +24,7 @@ const routes = [
     path: '/:path(.*)',
     meta: {
       title: '页面找不到',
+      keepAlive: false,
     },
     component: () => import('@/views/error/error-404.vue'),
   },

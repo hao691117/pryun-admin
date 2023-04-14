@@ -305,14 +305,14 @@ const logout = (e: any) => {
 .keepRoutesTansition-move,
 .keepRoutesTansition-enter-active,
 .keepRoutesTansition-leave-active {
-  transition: all 1000ms cubic-bezier(0.55, 0, 0.1, 1);
+  transition: all 500ms cubic-bezier(0.55, 0, 0.1, 1);
 }
 
 /* 2. 声明进入和离开的状态 */
 .keepRoutesTansition-enter-from,
 .keepRoutesTansition-leave-to {
   opacity: 0;
-  transform: scaleX(0.01) translate(30px, 0);
+  transform: scaleY(0.01) translateX(-30px);
 }
 
 /* 3. 确保离开的项目被移除出了布局流
