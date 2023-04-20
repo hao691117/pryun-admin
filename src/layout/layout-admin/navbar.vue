@@ -23,7 +23,7 @@
       <div class="menu-btn">
         <div class="menu-icon icon-search"></div>
       </div>
-      <div class="menu-btn">
+      <div class="menu-btn" @click="changeFullscreen(!isFullscreen)">
         <div class="menu-icon icon-screen-full"></div>
       </div>
       <el-dropdown trigger="click">
@@ -61,7 +61,7 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
 import { StoreSystem } from '@/store/system'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import type { RouteRecordRaw } from 'vue-router'
 
 const router = useRouter()
@@ -108,6 +108,17 @@ const Children = computed(() => {
 
 const logout = (e: any) => {
   router.push('/login')
+}
+
+const isFullscreen = ref(false)
+// 全屏
+const changeFullscreen = (state: boolean) => {
+  if (state) {
+    document.documentElement.requestFullscreen()
+  } else {
+    document.exitFullscreen()
+  }
+  isFullscreen.value = state
 }
 </script>
 <style scoped>
