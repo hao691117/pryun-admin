@@ -18,6 +18,7 @@ export const StoreSystem = defineStore('StoreSystem', {
       first: true, // 首次进入需要重新初始化路由
       refreshKey: 0, // 刷新页面
       dynamicRoutes: [] as RouteRecordRaw[], // 用户可访问的动态路由
+      siderMenus: [] as RouteRecordRaw[], // 侧边栏路由 (当采用分离式菜单时用到)
 
       siderRetract: false, // 是否收回侧边栏
       siderExpands: [] as string[], // 侧边栏展开项
