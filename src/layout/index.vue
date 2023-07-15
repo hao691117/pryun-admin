@@ -1,16 +1,24 @@
 <template>
-  <div class="layout">
-    <component :is="Layout">
-      <ContentView></ContentView>
-    </component>
-  </div>
+  <el-config-provider :locale="locale">
+    <div class="layout">
+      <component :is="Layout">
+        <ContentView></ContentView>
+      </component>
+    </div>
+  </el-config-provider>
 </template>
 
 <script lang="ts" setup>
 import LayoutAdmin from './layout-admin/index.vue'
 import ContentView from './components/ContentView/ContentView.vue'
 
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
+
+import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
+import en from 'element-plus/dist/locale/en.mjs'
+
+const language = ref('zh-cn')
+const locale = computed(() => (language.value === 'zh-cn' ? zhCn : en))
 
 const role = 'admin' // 可能需要根据角色来动态显示不同的布局
 

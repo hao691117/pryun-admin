@@ -5,4 +5,5 @@ declare module '*.vue' {
   export default Component
 }
 declare module '*.js'
+declare module '*.mjs'
 declare interface Window {}

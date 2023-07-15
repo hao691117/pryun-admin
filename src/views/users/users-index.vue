@@ -10,8 +10,8 @@
         </div>
         <div class="menus-span"></div>
         <div class="menus-item">
-          <el-input v-model="inf.key" class="w-50 m-2" placeholder="输入关键字" :suffix-icon="Search" />
-          <el-button type="primary">搜索</el-button>
+          <el-input v-model="inf.key" placeholder="输入关键字" clearable :suffix-icon="Search" />
+          <el-button type="primary" @click="getData">搜索</el-button>
         </div>
       </div>
     </template>
@@ -71,6 +71,9 @@
         </template>
       </el-table-column>
     </el-table>
+    <div class="pagination">
+      <el-pagination small background layout="total, prev, pager, next, jumper, sizes" v-model:current-page="inf.page" v-model:page-size="inf.size" :total="inf_res.total" @current-change="getData" @size-change="getData" />
+    </div>
   </ContentTable>
 </template>
 <script lang="ts" setup>
@@ -82,9 +85,12 @@ import { ref } from 'vue'
 
 const inf = ref({
   key: '',
+  page: 1,
+  size: 10,
 })
 
 const inf_res: any = ref({
+  total: 0,
   list: [],
 })
 
@@ -117,5 +123,12 @@ getData()
   .menus-item + .menus-item {
     margin-left: 10px;
   }
+}
+.pagination {
+  padding: 0 20px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }
 </style>
