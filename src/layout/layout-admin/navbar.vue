@@ -184,6 +184,7 @@ const changeFullscreen = (state: boolean) => {
 }
 .keepRoutes-list-item-text {
   white-space: nowrap;
+  line-height: 1;
 }
 .keepRoutes-list-item-close {
   position: relative;

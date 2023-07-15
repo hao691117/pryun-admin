@@ -8,7 +8,7 @@
 
 <script lang="ts" setup>
 import LayoutAdmin from './layout-admin/index.vue'
-import ContentView from './components/ContentView.vue'
+import ContentView from './components/ContentView/ContentView.vue'
 
 import { computed } from 'vue'
 
