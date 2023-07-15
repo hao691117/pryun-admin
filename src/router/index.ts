@@ -41,7 +41,7 @@ router.beforeEach(async (to, from, next) => {
   // 初始化系统数据
   const storeSystem = StoreSystem()
   try {
-    const needReplace: any = await storeSystem.init() // 初始化系统store数据
+    const needReplace: any = await storeSystem.init(false) // 初始化系统store数据
     if (needReplace) return next({ ...to, replace: true })
   } catch (error) {
     // 不能正常初始化时重新登录

@@ -79,23 +79,25 @@ export const StoreSystem = defineStore('StoreSystem', {
       }
     },
     // 初始化系统数据
-    async init() {
-      // 刷新后需要重新加载路由
-      let _first = this.first
-      if (_first) {
-        this.first = false
-        try {
-          // 尝试获取用户信息
-          const storeUser = StoreUser()
-          await storeUser.usersGetInfo()
-          // 尝试获取用户路由
-          await this.dynamicRoutesInit()
-        } catch (error) {
-          // 处理必须数据出错向外抛出 不能正常进入系统
-          throw error
+    init(force = true) {
+      return new Promise(async (resolve, reject) => {
+        // 刷新后需要重新加载路由
+        let _first = this.first
+        if (_first || force) {
+          this.first = false
+          try {
+            // 尝试获取用户信息
+            const storeUser = StoreUser()
+            await storeUser.usersGetInfo()
+            // 尝试获取用户路由
+            await this.dynamicRoutesInit()
+          } catch (error) {
+            // 处理必须数据出错向外抛出 不能正常进入系统
+            reject(error)
+          }
         }
-      }
-      return _first
+        resolve(_first)
+      })
     },
     // 路由改变后对应的一些变化
     change() {
