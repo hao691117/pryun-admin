@@ -35,8 +35,8 @@ import Footer from './footer.vue'
 }
 .body-view {
   position: relative;
-  height: 0;
-  flex: 1;
+  height: fit-content;
+  min-height: calc(100vh - 180px);
   z-index: 0;
 }
 </style>

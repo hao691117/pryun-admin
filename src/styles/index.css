@@ -5,7 +5,6 @@
 @import './element-style.css';
 
 body {
-  overflow: overlay;
   margin: 0;
   user-select: none;
   font-size: 14px;

@@ -1,10 +1,8 @@
 <template>
   <el-config-provider :locale="locale">
-    <div class="layout">
-      <component :is="Layout">
-        <ContentView></ContentView>
-      </component>
-    </div>
+    <component :is="Layout">
+      <ContentView></ContentView>
+    </component>
   </el-config-provider>
 </template>
 

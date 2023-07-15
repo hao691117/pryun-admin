@@ -45,7 +45,8 @@ const goBack = async () => {
 .card {
   padding: 20px;
   width: 100%;
-  height: 100%;
+  min-height: 100%;
+  height: fit-content;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;

@@ -1,9 +1,5 @@
 <template>
-  <div class="app-content">
-    <router-view></router-view>
-  </div>
+  <router-view></router-view>
 </template>
 <script setup lang="ts"></script>
-<style scoped>
-
-</style>
+<style scoped></style>
