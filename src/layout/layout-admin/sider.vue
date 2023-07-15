@@ -213,13 +213,10 @@ const MenusItemActive = computed(() => {
   display: flex;
   align-items: center;
   cursor: pointer;
-  transition: all 230ms ease-out;
   background-color: var(--color-sider);
   z-index: 2;
 }
-.menus-item-row-active {
-  color: #0097ff;
-}
+
 .menus-item-row:hover {
   background-color: var(--color-pr-action-sheet-active);
 }
@@ -254,6 +251,7 @@ const MenusItemActive = computed(() => {
   justify-content: center;
 }
 .row-icon-img {
+  position: relative;
   height: 24px;
   width: auto;
   object-fit: cover;
@@ -284,5 +282,15 @@ const MenusItemActive = computed(() => {
 }
 .menus-item-expand .row-arrow {
   transform: rotateZ(180deg);
+}
+
+.menus-item-row-active {
+  color: #0097ff;
+}
+.menus-item-row-active .row-icon-img {
+  transform: translateX(-80px);
+  filter: drop-shadow(#0097ff 80px 0);
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
 }
 </style>

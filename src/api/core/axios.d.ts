@@ -3,7 +3,7 @@ import axios from 'axios'
 declare module 'axios' {
   interface IAxios<D = null> {
     code: string | number
-    message: string
+    msg: string
     data: D
   }
   export interface AxiosResponse<T = any> extends IAxios<D> {}

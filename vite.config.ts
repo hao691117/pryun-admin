@@ -8,18 +8,18 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 const proxyOptions = {
   // 开发环境
   development: {
-    '/api': {
+    '/api-admin-dev': {
       target: 'https://api.pryun.vip',
       changeOrigin: true,
-      rewrite: (path) => path.replace(new RegExp('^/api'), ''),
+      rewrite: (path) => path.replace(new RegExp('^/api-admin-dev'), ''),
     },
   },
   // 生产环境
   production: {
-    '/api': {
+    '/api-admin-pro': {
       target: 'https://api.pryun.vip',
       changeOrigin: true,
-      rewrite: (path) => path.replace(new RegExp('^/api'), ''),
+      rewrite: (path) => path.replace(new RegExp('^/api-admin-pro'), ''),
     },
   },
 }

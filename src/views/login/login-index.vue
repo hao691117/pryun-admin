@@ -14,24 +14,49 @@
             <span style="font-size: 12px; margin-left: 8px; cursor: pointer; color: #999999; text-decoration: underline; text-underline-offset: 0.2em" @click="useTest">使用测试账号</span>
           </div>
           <div style="height: 40px"></div>
-          <div class="row-item">
-            <div class="row-item-name">账号</div>
-            <div class="row-item-input">
-              <el-input v-model="inf.account" placeholder="请输入账号" clearable @keyup.enter.native="login" />
+          <div class="mode-div">
+            <div v-if="inf.mode === 'login'" class="mode-div-item">
+              <div class="row-item">
+                <div class="row-item-name">账号</div>
+                <div class="row-item-input">
+                  <el-input v-model="inf.account" placeholder="请输入账号" clearable @keyup.enter.native="login" />
+                </div>
+                <div class="row-item-span"></div>
+              </div>
+              <div style="height: 20px"></div>
+              <div class="row-item">
+                <div class="row-item-name">密码</div>
+                <div class="row-item-input">
+                  <el-input v-model="inf.password" placeholder="请输入密码" show-password clearable @keyup.enter.native="login" />
+                </div>
+                <div class="row-item-span"></div>
+              </div>
+              <div class="row-item" style="justify-content: space-between">
+                <div class="tip-text" @click="inf.mode = 'loginBySms'">短信登录</div>
+                <div class="tip-text" @click="open">忘记密码?</div>
+              </div>
             </div>
-            <div class="row-item-span"></div>
-          </div>
-          <div style="height: 20px"></div>
-          <div class="row-item">
-            <div class="row-item-name">密码</div>
-            <div class="row-item-input">
-              <el-input v-model="inf.password" placeholder="请输入密码" show-password clearable @keyup.enter.native="login" />
+            <div v-else-if="inf.mode === 'loginBySms'" class="mode-div-item">
+              <div class="row-item">
+                <div class="row-item-name">手机号</div>
+                <div class="row-item-input">
+                  <el-input v-model="inf.mobile" placeholder="请输入手机号" clearable @keyup.enter.native="login" />
+                </div>
+                <div class="row-item-span"></div>
+              </div>
+              <div style="height: 20px"></div>
+              <div class="row-item">
+                <div class="row-item-name">验证码</div>
+                <div class="row-item-input">
+                  <el-input v-model="inf.smsCode" placeholder="请输入验证码" clearable @keyup.enter.native="login" />
+                </div>
+                <div class="row-item-span"></div>
+              </div>
+              <div class="row-item" style="justify-content: space-between">
+                <div class="tip-text" @click="inf.mode = 'login'">密码登录</div>
+                <div class="tip-text" @click="open">收不到验证码?</div>
+              </div>
             </div>
-            <div class="row-item-span"></div>
-          </div>
-          <div class="row-item" style="justify-content: space-between">
-            <div class="tip-text" @click="open">短信登录</div>
-            <div class="tip-text" @click="open">忘记密码?</div>
           </div>
           <div style="height: 20px"></div>
           <range v-model="rangeState"></range>
@@ -48,32 +73,55 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { ref, computed, watch } from 'vue'
-import range from './components/range.vue'
-import { ElNotification } from 'element-plus'
-import { ElMessage, ElMessageBox } from 'element-plus'
+import { StoreSystem } from '@/store/system'
+import { StoreUser } from '@/store/user'
+import md5 from '@/tools/md5.js'
+import * as authApi from '@/api/auth'
+import { ref, computed } from 'vue'
+import range from './components/range/range.vue'
+import { ElMessageBox } from 'element-plus'
+import { useRouter } from 'vue-router'
+
+const storeUser = StoreUser()
+const storeSystem = StoreSystem()
+const router = useRouter()
 
 const rangeState = ref(false)
 
 const loading = ref(false)
 const inf = ref({
-  account: '',
-  password: '',
+  mode: 'login', // loginBySms
+  account: '', // 账号（用户名/手机号/邮箱）
+  password: '', // 密码
+  mobile: '', // 手机号码
+  smsCode: '', // 短信验证码
 })
 
+// 使用测试账号
 const useTest = () => {
-  inf.value = {
-    account: 'admin',
-    password: '123456',
-  }
+  inf.value.mode = 'login'
+  inf.value.account = 'pryun_test'
+  inf.value.password = '123456'
 }
 
 const login = async () => {
   loading.value = true
   await new Promise((a) => setTimeout(() => a(true), 300))
-  // 正常情况这里需要先去登录 然后才会获取信息 这里直接跳过登录 用户信息也不获取了 后面做
   let _inf = { ...inf.value }
-  // console.log('\x1b[38;2;0;151;255m%c%s\x1b[0m', 'color:#0097ff;padding:16px 0;', `------->Breathe:_inf`, _inf)
+  _inf.password = md5(_inf.password)
+  await authApi.login({ data: _inf }).then(async (res) => {
+    // console.log('\x1b[38;2;0;151;255m%c%s\x1b[0m', 'color:#0097ff;padding:16px 0;', `------->Breathe:res`, res)
+    const { code = 0, msg, data } = res
+    if (code !== 200) {
+      ElMessageBox.alert(msg, '提示', { confirmButtonText: '好的' })
+    }
+    storeUser.setToken(data.token || '')
+    await storeSystem.init() // 初始化系统参数
+    // 登录成功
+    router.push('/')
+  })
+  loading.value = false
+  rangeState.value = false
 }
 
 const open = () => {

@@ -29,9 +29,9 @@
       <el-dropdown trigger="click">
         <div class="menu-btn">
           <div class="menu-icon icon-user">
-            <img class="menu-icon-img" src="https://pryun.oss-cn-chengdu.aliyuncs.com/pryun/avatars/1681185499682_A0A7.jpg" alt="" />
+            <img class="menu-icon-img" :src="userInfo.avatar" alt="" />
           </div>
-          <div class="menu-text">Breathe</div>
+          <div class="menu-text">{{ userInfo.nickname }}</div>
         </div>
         <template #dropdown>
           <el-dropdown-menu>
@@ -59,10 +59,13 @@
   </div>
 </template>
 <script setup lang="ts">
-import { useRoute, useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { StoreSystem } from '@/store/system'
 import { computed, ref } from 'vue'
 import type { RouteRecordRaw } from 'vue-router'
+import { StoreUser } from '@/store/user'
+
+const storeUser = StoreUser()
 
 const router = useRouter()
 const storeSystem = StoreSystem()
@@ -70,6 +73,7 @@ const storeSystem = StoreSystem()
 const siderRetract = computed(() => storeSystem.siderRetract)
 const breadcrumb = computed(() => storeSystem.breadcrumb)
 const keepRoutes = computed(() => storeSystem.keepRoutes)
+const userInfo: any = computed(() => storeUser.userInfo)
 
 // import { useDark, useToggle } from '@vueuse/core'
 
@@ -106,7 +110,8 @@ const Children = computed(() => {
   }
 })
 
-const logout = (e: any) => {
+const logout = async (e: any) => {
+  await storeUser.logout()
   router.push('/login')
 }
 

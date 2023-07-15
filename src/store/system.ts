@@ -3,6 +3,7 @@ import Layout from '@/layout/index.vue'
 import router from '@/router/index'
 import { dynamicRoutes } from '@/router/dynamicRoutes'
 import { RouteRecordRaw, stringifyQuery } from 'vue-router'
+import { StoreUser } from '@/store/user'
 
 // 系统相关的
 export const StoreSystem = defineStore('StoreSystem', {
@@ -83,10 +84,16 @@ export const StoreSystem = defineStore('StoreSystem', {
       let _first = this.first
       if (_first) {
         this.first = false
-        // 尝试获取用户信息
-        // this.init_userInfo()
-        // 尝试获取用户路由
-        this.dynamicRoutesInit()
+        try {
+          // 尝试获取用户信息
+          const storeUser = StoreUser()
+          await storeUser.usersGetInfo()
+          // 尝试获取用户路由
+          await this.dynamicRoutesInit()
+        } catch (error) {
+          // 处理必须数据出错向外抛出 不能正常进入系统
+          throw error
+        }
       }
       return _first
     },
