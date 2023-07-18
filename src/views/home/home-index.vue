@@ -20,7 +20,7 @@
         <el-table-column label="头像" width="120" align="center">
           <template #default="scope">
             <div style="display: flex; align-items: center; justify-content: center">
-              <el-avatar :size="48" shape="square" :src="scope.row.avatar" />
+              <el-avatar :size="36" shape="square" :src="scope.row.avatar" />
             </div>
           </template>
         </el-table-column>
