@@ -18,8 +18,7 @@ import Sider from './sider.vue'
 .layout-admin {
   position: relative;
   box-sizing: border-box;
-  width: 100vw;
-  /* height: 100vh; */
+  width: 100%;
   display: flex;
   transition: all 230ms ease-out;
   color: var(--color-text);

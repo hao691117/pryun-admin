@@ -1,20 +1,21 @@
 @import './styles/color.css';
 @import './styles/color_dark.css';
-/* @import './styles/scrollbar.css'; */
+@import './styles/scrollbar.css';
 @import './styles/icon.css';
 @import './styles/element-style.css';
 
-html,
-body {
-  margin: 0;
-  padding: 0;
+html {
   user-select: none;
   font-size: 14px;
+  width: 100vw;
   height: -webkit-fill-available;
+}
+body {
+  margin: 0;
   min-height: 100vh;
   min-height: -webkit-fill-available; /* mobile viewport bug fix */
-  overflow-y: auto;
   overflow-x: hidden;
+  overflow-y: overlay;
 }
 
 .backdrop-filter {
