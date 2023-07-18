@@ -64,7 +64,7 @@
           <el-button v-else size="small" type="danger">女</el-button>
         </template>
       </el-table-column>
-      <el-table-column label="Operations" width="200">
+      <el-table-column label="Operations" width="160" align="center">
         <template #default="scope">
           <el-button size="small">编辑</el-button>
           <el-button size="small" type="danger">删除</el-button>

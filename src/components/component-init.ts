@@ -1,3 +1,4 @@
+import Footer from '@/components/Footer/Footer.vue'
 import ContentTable from '@/components/ContentTable/ContentTable.vue'
 
 import ElementPlus from 'element-plus'
@@ -8,6 +9,7 @@ import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
 export default {
   install: (app: any) => {
+    app.component('Footer', Footer)
     app.component('ContentTable', ContentTable)
     app.use(ElementPlus)
     // 注册全局的el-icon图标

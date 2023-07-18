@@ -154,7 +154,6 @@ const changeFullscreen = (state: boolean) => {
   display: flex;
   align-items: center;
   gap: 8px;
-  /* overflow-x: overlay; */
 }
 .keepRoutes-list-item {
   position: relative;

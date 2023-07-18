@@ -3,27 +3,37 @@
     <div class="navbar-content">
       <div class="logo">
         <div class="logo-img"></div>
-        <div class="logo-text">PR云社区开放平台</div>
-        <div class="logo-text logo-lable">融合治理 数智通</div>
+        <div class="logo-text">天府新区可视化报表系统</div>
       </div>
-      <div class="content-flex-1"></div>
+      <div class="content-flex-1">
+        <div class="menus">
+          <div class="menus-item" v-for="(item, index) in dynamicRoutes" :key="index" :class="[{ 'menus-item-active': MenusItemActive(item.path) }]" @click="select(item)">{{ item.meta?.title }}</div>
+        </div>
+      </div>
       <div class="menu-btn">
-        <div class="menu-icon icon-search"></div>
+        <div class="menu-icon icon-search invert"></div>
       </div>
       <div class="menu-btn" @click="changeFullscreen(!isFullscreen)">
-        <div class="menu-icon icon-screen-full"></div>
+        <div class="menu-icon icon-screen-full invert"></div>
       </div>
       <el-dropdown trigger="click">
         <div class="menu-btn">
           <div class="menu-icon icon-user">
-            <img class="menu-icon-img" src="https://pryun.oss-cn-chengdu.aliyuncs.com/pryun/avatars/1681185499682_A0A7.jpg" alt="" />
+            <img class="menu-icon-img" v-if="userInfo.avatar || userInfo.headUrl || userInfo.head" :src="userInfo.avatar || userInfo.headUrl || userInfo.head" alt="" />
           </div>
-          <div class="menu-text">Breathe</div>
+          <div class="menu-text">{{ userInfo.nickname || userInfo.realname || '游客' }}</div>
         </div>
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item>个人资料</el-dropdown-item>
-            <el-dropdown-item @click="logout">注销登录</el-dropdown-item>
+            <el-dropdown-item @click="openAccount"
+              ><el-icon><User /></el-icon>个人资料</el-dropdown-item
+            >
+            <el-dropdown-item @click="openChangePwd"
+              ><el-icon><Lock /></el-icon>修改密码</el-dropdown-item
+            >
+            <el-dropdown-item @click="logout"
+              ><el-icon><SwitchButton /></el-icon>注销登录</el-dropdown-item
+            >
           </el-dropdown-menu>
         </template>
       </el-dropdown>
@@ -32,54 +42,54 @@
 </template>
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
+import { StoreUser } from '@/store/user'
 import { StoreSystem } from '@/store/system'
 import { computed, ref } from 'vue'
 import type { RouteRecordRaw } from 'vue-router'
 
+const route = useRoute()
 const router = useRouter()
 const storeSystem = StoreSystem()
+const storeUser = StoreUser()
 
-const siderRetract = computed(() => storeSystem.siderRetract)
-const breadcrumb = computed(() => storeSystem.breadcrumb)
-const keepRoutes = computed(() => storeSystem.keepRoutes)
+const userInfo: any = computed(() => storeUser.userInfo)
 
-// import { useDark, useToggle } from '@vueuse/core'
-
-// const isDark = useDark()
-// const toggleDark = useToggle(isDark)
+const dynamicRoutes = computed(() => {
+  const fullRoutes = storeSystem.dynamicRoutes
+  return fullRoutes.filter((item) => {
+    if (item.meta) {
+      return !item.meta.hideInNav
+    } else {
+      return true
+    }
+  })
+  // return storeSystem.dynamicRoutes
+}) // 动态路由列表
 
 // 选中切换
-const select = (path: string) => {
-  router.push(path)
+const select = (route: RouteRecordRaw) => {
+  router.push(route.path)
 }
 
-// 关闭标签
-const close = (path: string) => {
-  storeSystem.removeKeepRoutes(path)
-}
-
-const Breadcrumb = computed(() => {
-  let arr = []
-  for (const item of breadcrumb.value) {
-    const { children = [] } = item
-    if (children.length !== 1) {
-      arr.push(item)
-    }
-  }
-  return arr
-})
-
-const Children = computed(() => {
-  return function (route: RouteRecordRaw) {
-    const { children = [] } = route
-    const _children = children.filter((item) => !item.meta?.hideInSider) // 过滤掉隐藏路由
-    if (_children.length <= 1) return []
-    return _children
+// 是否已激活
+const MenusItemActive = computed(() => {
+  return function (_path: string) {
+    const { path, meta } = route
+    let active = path.indexOf(_path) === 0
+    return active
   }
 })
 
-const logout = (e: any) => {
+const logout = async (e: any) => {
+  await storeUser.logout()
   router.push('/login')
+}
+
+const openAccount = (e: any) => {
+  router.push('/account')
+}
+const openChangePwd = (e: any) => {
+  router.push('/account/account-pwd')
 }
 
 const isFullscreen = ref(false)
@@ -92,18 +102,47 @@ const changeFullscreen = (state: boolean) => {
   }
   isFullscreen.value = state
 }
+
+// 大屏数据看板
+const goBigScreen = () => {
+  router.push('/dataBoard/index')
+}
 </script>
-<style scoped>
+<style lang="scss" scoped>
 .navbar {
   position: sticky;
   top: 0;
   left: 0;
   border-bottom: 1px solid rgba(128, 128, 128, 0.2);
-  /* background-color: var(--color-sider); */
   background-color: rgba(35, 36, 38, 1);
-  z-index: 9;
   flex-shrink: 0;
   color: #ffffff;
+  height: 68px;
+  box-sizing: border-box;
+}
+.menus {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+.menus-item {
+  height: 100%;
+  padding: 0 20px;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 230ms ease-out;
+}
+.menus-item:hover {
+  /* background-color: rgba(17, 18, 22, 1); */
+  color: rgba(65, 125, 255, 1);
+}
+.menus-item-active {
+  background-color: rgba(17, 18, 22, 1);
+  color: rgba(65, 125, 255, 1);
 }
 .navbar-content {
   height: 68px;
@@ -120,7 +159,7 @@ const changeFullscreen = (state: boolean) => {
   position: relative;
   box-sizing: border-box;
   padding: 16px;
-  height: 78px;
+  height: 68px;
   display: flex;
   align-items: stretch;
   transition: inherit;
@@ -138,28 +177,24 @@ const changeFullscreen = (state: boolean) => {
 }
 .logo-text {
   flex-shrink: 0;
-  width: calc(280px - 40px - 8px - 32px);
   position: relative;
   margin-left: 16px;
   display: flex;
   font-size: 18px;
+  font-weight: bold;
   align-items: center;
   flex-wrap: nowrap;
   transition: inherit;
   left: 0;
   opacity: 1;
 }
-.logo-lable {
-  color: rgba(145, 146, 148, 1);
-  font-size: 16px;
-}
+
 .keepRoutes-list {
   position: relative;
   padding: 0 8px;
   display: flex;
   align-items: center;
   gap: 8px;
-  /* overflow-x: overlay; */
 }
 .keepRoutes-list-item {
   position: relative;
@@ -221,7 +256,9 @@ const changeFullscreen = (state: boolean) => {
 
 .content-flex-1 {
   width: 0;
+  height: 100%;
   flex: 1;
+  overflow: hidden;
 }
 
 .menu-btn {
@@ -236,7 +273,7 @@ const changeFullscreen = (state: boolean) => {
   cursor: pointer;
 }
 .menu-btn:hover {
-  background-color: var(--color-pr-action-sheet-active);
+  background-color: rgba(17, 18, 22, 1);
 }
 .menu-icon {
   flex-shrink: 0;
@@ -244,12 +281,13 @@ const changeFullscreen = (state: boolean) => {
   height: 20px;
   background-size: 100% 100%;
   background-repeat: no-repeat;
-  filter: invert(100%);
 }
 .menu-icon-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+.invert {
   filter: invert(100%);
 }
 .menu-icon + .menu-text {
@@ -278,6 +316,7 @@ const changeFullscreen = (state: boolean) => {
   border-radius: 50%;
   overflow: hidden;
   background-image: url('data:image/png;base64,/9j/4AAQSkZJRgABAQAASABIAAD/2wBDAAcFBQYFBAcGBgYIBwcICxILCwoKCxYPEA0SGhYbGhkWGRgcICgiHB4mHhgZIzAkJiorLS4tGyIyNTEsNSgsLSz/wAALCACEAIQBAREA/8QAGwABAAIDAQEAAAAAAAAAAAAAAAMFAgQGAQj/xAAuEAEAAgECAggGAgMAAAAAAAAAAQIDBBEFIRIVMUFRZKLhEyJhcYHBFFIjkdH/2gAIAQEAAD8A+gQAAACIAIgAAAAAiACIAAAAAAAAAAAAQ6vVU0mH4l+c90eMqDPrtRqLb2vaI8I5QhrkvjtvS9on6WWnD+KWm8YtRbfflF/+rcAAABz/ABbPOXXTXux/JH7aIOl4dnnPoqWtzmOU/lsgAAA5jWxMa7NE/wB5QAvuDRMaKZ8bz+lgAAACk4zpZrmjUV7L8p+ysGVa2yXila7zPKHTaXDGn01MX9Y5/dMAAADHLirmxTjvXekuXzY/g5r4+3ozMf7Rrjgunr0Z1E8532p9FsAAAA09ZxLFp6zWtunk8I7vu5+1pyXm9uczO8sW/wAO4h/EmaXrvjnn9pXmLLjzU6eO1bx9WYAACHUavFpadLJbn3R3ypdXxTNqN60/x08I7Z/DRASYc+TBfp4rWpK40nGKZdq5/knx7vdY9vOHoAA5TLlvmyTkvbeYYAALrguW9seTHa29a7bfndaAACptwKs3ma59o8Ojv+3nUXmPR7nUXmPR7nUXmPR7nUXmPR7nUXmPR7nUXmPR7nUXmPR7t3Q6KuipeIv05t2z2djaAAAAAAAAAAAAAAAAAAAAAAAB/9k=');
+  filter: none;
 }
 .breadcrumb {
   display: flex;

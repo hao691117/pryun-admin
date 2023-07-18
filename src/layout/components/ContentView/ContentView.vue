@@ -30,9 +30,7 @@ const KeepRoutes = computed(() => {
   box-sizing: border-box;
   flex: 1;
   width: 100%;
-  min-height: 100%;
   height: fit-content;
-  overflow-x: hidden;
 }
 
 .fade-enter-active,
@@ -41,7 +39,7 @@ const KeepRoutes = computed(() => {
   left: 0;
   top: 0;
   width: 100%;
-  /* transition: all 230ms ease-out; */
+  overflow: hidden;
   transition: all 500ms cubic-bezier(0.55, 0, 0.1, 1);
 }
 

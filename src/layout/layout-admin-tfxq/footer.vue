@@ -3,6 +3,8 @@
 </template>
 <style>
 .footer {
+  border-top: 1px solid rgba(128, 128, 128, 0.2);
+  box-sizing: border-box;
   min-height: 60px;
   flex-shrink: 0;
   z-index: 9;
@@ -10,7 +12,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-top: 1px solid rgba(128, 128, 128, 0.2);
 }
 .footer-sticky {
   position: sticky;

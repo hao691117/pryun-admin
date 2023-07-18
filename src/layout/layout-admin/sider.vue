@@ -177,7 +177,6 @@ const MenusItemActive = computed(() => {
   flex: 1;
   box-sizing: border-box;
   overflow-x: hidden;
-  overflow-y: overlay;
   transition: inherit;
 }
 .sider-min {

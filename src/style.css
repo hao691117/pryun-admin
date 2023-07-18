@@ -4,10 +4,17 @@
 @import './styles/icon.css';
 @import './styles/element-style.css';
 
+html,
 body {
   margin: 0;
+  padding: 0;
   user-select: none;
   font-size: 14px;
+  height: -webkit-fill-available;
+  min-height: 100vh;
+  min-height: -webkit-fill-available; /* mobile viewport bug fix */
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .backdrop-filter {

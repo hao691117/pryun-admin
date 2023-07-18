@@ -97,7 +97,7 @@ export const dynamicRoutes: RouteRecordRaw[] = [
     name: 'users',
     path: '/users',
     meta: { icons: [icons.user], title: '用户管理' },
-    redirect: '/users/users-brisk',
+    redirect: '/users/users-index',
     children: [
       {
         name: 'users-brisk',
