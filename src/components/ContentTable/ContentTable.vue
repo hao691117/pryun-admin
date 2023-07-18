@@ -52,10 +52,10 @@ const goBack = async () => {
   .card-content {
     height: 0;
     flex: 1;
-    background-color: #ffffff;
+    background-color: var(--color-bg);
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 0 20px 20px rgba(173, 173, 173, 0.1);
+    box-shadow: 0 0 20px 4px rgba(128, 128, 128, 0.1);
     .back {
       padding: 0 20px;
       height: 60px;
