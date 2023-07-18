@@ -1,23 +1,10 @@
 <template>
   <div class="backdrop-filter navbar">
     <div class="navbar-content">
-      <div class="menu-btn" @click="storeSystem.setSiderRetract(!siderRetract)">
-        <div class="menu-icon icon-list" :class="[{ 'icon-list-active': siderRetract }]"></div>
-      </div>
-      <div class="breadcrumb">
-        <TransitionGroup name="breadcrumbTransition">
-          <div v-for="(item, index) in Breadcrumb" :key="item.path" class="breadcrumb-item">
-            <div v-if="index !== 0" class="breadcrumb-item-span">/</div>
-            <el-dropdown trigger="click">
-              <div class="breadcrumb-item-text" :class="[{ 'breadcrumb-item-text-hover': Children(item).length }]">{{ item.meta?.title }}</div>
-              <template v-if="Children(item).length" #dropdown>
-                <el-dropdown-menu>
-                  <el-dropdown-item v-for="(item2, index2) in Children(item)" :disabled="item2.path === $route.path" @click="select(item2.path)">{{ item2.meta?.title }}</el-dropdown-item>
-                </el-dropdown-menu>
-              </template>
-            </el-dropdown>
-          </div>
-        </TransitionGroup>
+      <div class="logo">
+        <div class="logo-img"></div>
+        <div class="logo-text">PR云社区开放平台</div>
+        <div class="logo-text logo-lable">融合治理 数智通</div>
       </div>
       <div class="content-flex-1"></div>
       <div class="menu-btn">
@@ -29,9 +16,9 @@
       <el-dropdown trigger="click">
         <div class="menu-btn">
           <div class="menu-icon icon-user">
-            <img class="menu-icon-img" :src="userInfo.avatar" alt="" />
+            <img class="menu-icon-img" src="https://pryun.oss-cn-chengdu.aliyuncs.com/pryun/avatars/1681185499682_A0A7.jpg" alt="" />
           </div>
-          <div class="menu-text">{{ userInfo.nickname }}</div>
+          <div class="menu-text">Breathe</div>
         </div>
         <template #dropdown>
           <el-dropdown-menu>
@@ -41,32 +28,13 @@
         </template>
       </el-dropdown>
     </div>
-    <div class="navbar-content navbar-keepRoutes">
-      <TransitionGroup class="keepRoutes-list" name="keepRoutesTansition" tag="div">
-        <div v-for="(item, index) in keepRoutes" :key="item.path" class="keepRoutes-list-item" :class="[{ 'keepRoutes-list-item-active': item.path === $route.fullPath }]" @click="select(item.path)">
-          <div class="keepRoutes-list-item-icon">
-            <img class="keepRoutes-list-item-icon-img" :src="item.meta?.icons?.[0] || ''" alt="" />
-          </div>
-          <div class="keepRoutes-list-item-text">{{ item.meta?.title }}</div>
-          <div class="keepRoutes-list-item-close" @click.stop="close(item.path)"></div>
-        </div>
-      </TransitionGroup>
-      <div class="content-flex-1"></div>
-      <div class="menu-btn" @click="storeSystem.refresh">
-        <div class="menu-icon icon-refresh"></div>
-      </div>
-    </div>
   </div>
 </template>
 <script setup lang="ts">
-import { ElDropdown, ElDropdownMenu, ElDropdownItem } from 'element-plus'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { StoreSystem } from '@/store/system'
 import { computed, ref } from 'vue'
 import type { RouteRecordRaw } from 'vue-router'
-import { StoreUser } from '@/store/user'
-
-const storeUser = StoreUser()
 
 const router = useRouter()
 const storeSystem = StoreSystem()
@@ -74,7 +42,6 @@ const storeSystem = StoreSystem()
 const siderRetract = computed(() => storeSystem.siderRetract)
 const breadcrumb = computed(() => storeSystem.breadcrumb)
 const keepRoutes = computed(() => storeSystem.keepRoutes)
-const userInfo: any = computed(() => storeUser.userInfo)
 
 // import { useDark, useToggle } from '@vueuse/core'
 
@@ -111,8 +78,7 @@ const Children = computed(() => {
   }
 })
 
-const logout = async (e: any) => {
-  await storeUser.logout()
+const logout = (e: any) => {
   router.push('/login')
 }
 
@@ -133,9 +99,11 @@ const changeFullscreen = (state: boolean) => {
   top: 0;
   left: 0;
   border-bottom: 1px solid rgba(128, 128, 128, 0.2);
-  background-color: var(--color-sider);
+  /* background-color: var(--color-sider); */
+  background-color: rgba(35, 36, 38, 1);
   z-index: 9;
   flex-shrink: 0;
+  color: #ffffff;
 }
 .navbar-content {
   height: 68px;
@@ -147,6 +115,43 @@ const changeFullscreen = (state: boolean) => {
 }
 .navbar-keepRoutes {
   height: 50px;
+}
+.logo {
+  position: relative;
+  box-sizing: border-box;
+  padding: 16px;
+  height: 78px;
+  display: flex;
+  align-items: stretch;
+  transition: inherit;
+}
+.logo-img {
+  position: relative;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  transform: scale(1.2);
+  z-index: 1;
+  background-image: url('@/assets/logo.svg');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+.logo-text {
+  flex-shrink: 0;
+  width: calc(280px - 40px - 8px - 32px);
+  position: relative;
+  margin-left: 16px;
+  display: flex;
+  font-size: 18px;
+  align-items: center;
+  flex-wrap: nowrap;
+  transition: inherit;
+  left: 0;
+  opacity: 1;
+}
+.logo-lable {
+  color: rgba(145, 146, 148, 1);
+  font-size: 16px;
 }
 .keepRoutes-list {
   position: relative;
@@ -185,7 +190,6 @@ const changeFullscreen = (state: boolean) => {
 }
 .keepRoutes-list-item-text {
   white-space: nowrap;
-  line-height: 1;
 }
 .keepRoutes-list-item-close {
   position: relative;
@@ -240,11 +244,13 @@ const changeFullscreen = (state: boolean) => {
   height: 20px;
   background-size: 100% 100%;
   background-repeat: no-repeat;
+  filter: invert(100%);
 }
 .menu-icon-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  filter: invert(100%);
 }
 .menu-icon + .menu-text {
   margin-left: 8px;

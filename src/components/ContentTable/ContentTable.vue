@@ -16,6 +16,7 @@
   </div>
 </template>
 <script lang="ts" setup>
+import { ElPageHeader } from 'element-plus'
 import { useRoute, useRouter } from 'vue-router'
 import { StoreSystem } from '@/store/system'
 import { nextTick } from 'vue'

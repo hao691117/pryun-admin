@@ -10,6 +10,7 @@
   </div>
 </template>
 <script lang="ts" setup>
+import { ElIcon } from 'element-plus'
 import { ref, computed, watch } from 'vue'
 const emit = defineEmits(['update:modelValue'])
 

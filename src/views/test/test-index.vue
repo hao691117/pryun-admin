@@ -16,6 +16,7 @@
   </ContentTable>
 </template>
 <script lang="ts" setup>
+import { ElButton } from 'element-plus'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 

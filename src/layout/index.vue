@@ -7,7 +7,9 @@
 </template>
 
 <script lang="ts" setup>
+import { ElConfigProvider } from 'element-plus'
 import LayoutAdmin from './layout-admin/index.vue'
+// import LayoutAdmin from './layout-admin-tfxq/index.vue'
 import ContentView from './components/ContentView/ContentView.vue'
 
 import { ref, computed } from 'vue'

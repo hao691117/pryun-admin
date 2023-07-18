@@ -39,6 +39,7 @@
   </ContentTable>
 </template>
 <script lang="ts" setup>
+import { ElTable, ElTableColumn, ElButton, ElTag, ElPopover, ElIcon } from 'element-plus'
 import { ref } from 'vue'
 
 const tableData = ref([

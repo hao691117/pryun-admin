@@ -4,9 +4,11 @@ import App from './App.vue'
 import { createPinia } from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
-import router from '@/router'
+import router from './router'
 
 import componentInit from '@/components/component-init'
+import './styles/iconfont.js'
+import './style.css'
 
 const app = createApp(App) // 创建实例
 

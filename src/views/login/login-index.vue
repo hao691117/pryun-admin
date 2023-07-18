@@ -79,7 +79,7 @@ import md5 from '@/tools/md5.js'
 import * as authApi from '@/api/auth'
 import { ref, computed } from 'vue'
 import range from './components/range/range.vue'
-import { ElMessageBox } from 'element-plus'
+import { ElMessageBox, ElInput, ElButton } from 'element-plus'
 import { useRouter } from 'vue-router'
 
 const storeUser = StoreUser()
