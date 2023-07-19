@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: huangyh
  * @Date: 2023-07-18 17:29:25
- * @LastEditTime: 2023-07-19 17:14:19
+ * @LastEditTime: 2023-07-19 17:23:48
  * @LastEditors: huangyh
 -->
 <template>
@@ -29,7 +29,7 @@
       </el-table>
       <el-table :data="key_value_lists" style="width: 30%" v-if="_info.value1">
         <el-table-column prop="name" label="字段" />
-        <el-table-column prop="name" label="示例值" />
+        <el-table-column prop="value" label="示例值" />
       </el-table>
     </div>
   </div>
@@ -106,9 +106,14 @@ const getLists = () => {
 }
 const getValue = (e :string) => {
     const lists = tableData.value[0]
-    console.log(Object.keys(lists));
-    
-    // if(e === lists.)
+    const keys = Object.keys(lists)
+    keys.includes(e)
+    switch (keys.indexOf(e)) {
+        case 0:
+        return lists.date;
+        case 1:
+        return lists.name;
+    }
 }
 getLists()
 </script>
