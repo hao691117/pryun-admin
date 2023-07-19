@@ -52,6 +52,15 @@ export const dynamicRoutes: RouteRecordRaw[] = [
         },
         component: () => import('../views/dataIndex/dataIndex-index.vue'),
       },
+      {
+        name: 'dataIndex-index-info',
+        path: '/dataIndex/dataIndex-index-info',
+        meta: {
+          title: '指标配置',
+          showFooter: false,
+        },
+        component: () => import('../views/dataIndex/components/info/info.vue'),
+      },
     ],
   },
   {

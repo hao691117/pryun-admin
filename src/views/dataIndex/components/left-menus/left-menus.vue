@@ -38,7 +38,7 @@
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="dialogFormVisible = false">取消</el-button>
-          <el-button type="primary" @click="dialogFormVisible = false"> 确认 </el-button>
+          <el-button type="primary" @click="confirm"> 确认 </el-button>
         </span>
       </template>
     </el-dialog>
@@ -46,7 +46,9 @@
 </template>
 <script lang="ts" setup>
 import { ref, reactive } from 'vue'
+import { useRouter } from 'vue-router'
 import { Search, Edit, EditPen, Delete, CopyDocument, Share, Plus } from '@element-plus/icons-vue'
+const router = useRouter()
 const dialogFormVisible = ref(false)
 const formLabelWidth = '140px'
 const form = reactive({
@@ -87,6 +89,9 @@ const resetName = (e: any) => {
   dialog_title.value = '重命名项目'
   form.name = e.name
   dialogFormVisible.value = true
+}
+const confirm = () => {
+  router.push('/dataIndex/dataIndex-index-info')
 }
 </script>
 <style lang="scss" scoped>
