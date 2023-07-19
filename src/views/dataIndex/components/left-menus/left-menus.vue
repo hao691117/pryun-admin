@@ -4,34 +4,11 @@
       <el-input v-model="inf.key" placeholder="输入项目名称" clearable :suffix-icon="Search" />
     </div>
     <div class="title">
-      <div class="title-text">数据指标</div>
-      <div style="flex: 1; width: 0"></div>
-    </div>
-    <div class="list">
-      <div class="list-item" :class="[{ 'list-item-active': activeIndex === item.id }]" v-for="(item, index) in def_list" @click="select(item)">
-        <div class="list-item-name">{{ item.name }}</div>
-        <div class="icon-btn">
-          <el-dropdown trigger="click">
-            <el-icon :size="16"><MoreFilled /></el-icon>
-            <template #dropdown>
-              <el-dropdown-menu>
-                <el-dropdown-item :icon="EditPen">编辑</el-dropdown-item>
-                <el-dropdown-item :icon="CopyDocument">复制</el-dropdown-item>
-                <el-dropdown-item :icon="Share">分享</el-dropdown-item>
-                <el-dropdown-item :icon="Edit">重命名</el-dropdown-item>
-                <el-dropdown-item :icon="Delete"> 删除 </el-dropdown-item>
-              </el-dropdown-menu>
-            </template>
-          </el-dropdown>
-        </div>
-      </div>
-    </div>
-    <div class="title">
       <div class="title-text">我的项目</div>
       <div style="flex: 1; width: 0"></div>
       <div class="icon-btn">
         <el-tooltip content="创建一个新的项目" placement="top" effect="light">
-          <el-icon :size="20"><Plus /></el-icon>
+          <el-icon :size="20" @click="addProject"><Plus /></el-icon>
         </el-tooltip>
       </div>
     </div>
@@ -44,9 +21,7 @@
             <template #dropdown>
               <el-dropdown-menu>
                 <el-dropdown-item :icon="EditPen">编辑</el-dropdown-item>
-                <el-dropdown-item :icon="CopyDocument">复制</el-dropdown-item>
-                <el-dropdown-item :icon="Share">分享</el-dropdown-item>
-                <el-dropdown-item :icon="Edit">重命名</el-dropdown-item>
+                <el-dropdown-item :icon="Edit" @click="resetName(item)">重命名</el-dropdown-item>
                 <el-dropdown-item :icon="Delete"> 删除 </el-dropdown-item>
               </el-dropdown-menu>
             </template>
@@ -54,12 +29,30 @@
         </div>
       </div>
     </div>
+    <el-dialog width="30%" v-model="dialogFormVisible" :title="dialog_title">
+      <el-form :model="form">
+        <el-form-item label="项目名称" :label-width="formLabelWidth">
+          <el-input v-model="form.name" autocomplete="off" placeholder="请输入项目名称" />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="dialogFormVisible = false">取消</el-button>
+          <el-button type="primary" @click="dialogFormVisible = false"> 确认 </el-button>
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, reactive } from 'vue'
 import { Search, Edit, EditPen, Delete, CopyDocument, Share, Plus } from '@element-plus/icons-vue'
-
+const dialogFormVisible = ref(false)
+const formLabelWidth = '140px'
+const form = reactive({
+  name: '',
+})
+const dialog_title = ref("")
 const inf = ref({
   key: '',
 })
@@ -85,6 +78,15 @@ const activeIndex = ref(1)
 
 const select = (item: any) => {
   activeIndex.value = item.id
+}
+const addProject = () => {
+  dialog_title.value = '创建项目'
+  dialogFormVisible.value = true
+}
+const resetName = (e: any) => {
+  dialog_title.value = '重命名项目'
+  form.name = e.name
+  dialogFormVisible.value = true
 }
 </script>
 <style lang="scss" scoped>
